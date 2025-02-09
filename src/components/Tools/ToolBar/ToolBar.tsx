@@ -11,7 +11,7 @@ function ToolBar() {
             {/* Use Link for navigation */}
           </li>
           <li>
-            <a href="/tools/interest-calculator">Interest Calculator</a>
+            <Link to="/tools/interest-calculator">Interest Calculator</Link>{" "}
           </li>
         </ul>
       </nav>

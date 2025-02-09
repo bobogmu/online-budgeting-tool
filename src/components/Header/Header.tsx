@@ -10,10 +10,10 @@ function Header() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/tools">Tools</Link> {/* Use Link for navigation */}
+            <Link to="tools">Tools</Link> {/* Use Link for navigation */}
           </li>
           <li>
-            <Link to="/contact">Contact</Link> {/* Use Link for navigation */}
+            <Link to="contact">Contact</Link> {/* Use Link for navigation */}
           </li>
         </ul>
       </nav>

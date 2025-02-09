@@ -9,12 +9,12 @@ import "./App.css";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/online-budgeting-tool">
       <Header /> {/* Header component with navbar */}
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
-        <Route path="/tools/*" element={<Tools />} />{" "}
-        <Route path="/contact" element={<Contact />} />{" "}
+        <Route path="tools/*" element={<Tools />} />{" "}
+        <Route path="contact" element={<Contact />} />{" "}
         {/* About page (example) */}
         {/* Add more routes as needed */}
       </Routes>
