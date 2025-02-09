@@ -1,15 +1,19 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
   return (
     <header className="header">
       <nav>
-        <ul className="nav-links">
+        <ul className="main-nav">
           <li>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link> {/* Use Link for navigation */}
           </li>
           <li>
-            <a href="/contact">Contact</a>
+            <Link to="/tools">Tools</Link> {/* Use Link for navigation */}
+          </li>
+          <li>
+            <Link to="/contact">Contact</Link> {/* Use Link for navigation */}
           </li>
         </ul>
       </nav>
