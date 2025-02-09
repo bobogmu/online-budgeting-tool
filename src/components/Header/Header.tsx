@@ -7,7 +7,7 @@ function Header() {
       <nav>
         <ul className="main-nav">
           <li>
-            <Link to="/">Home</Link> {/* Use Link for navigation */}
+            <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/tools">Tools</Link> {/* Use Link for navigation */}
