@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Budget from "./Budget/Budget";
 import InterestCalculator from "./InterestCalculator/InterestCalculator";
 
