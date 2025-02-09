@@ -1,0 +1,36 @@
+/* Header.css */
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centers the navbar horizontally */
+  align-items: center;     /* Centers the navbar vertically (remove this if not needed) */
+  background-color: #333;
+  padding: 1rem 0;
+  position: absolute; /* Fixes the header at the top of the page */
+  top: 0;             /* Aligns it at the top of the page */
+  left: 0;            /* Ensures the header spans the full width */
+  right: 0;
+  z-index: 1000;      /* Keeps the header above other content */
+}
+
+nav ul {
+  list-style-type: none; /* Removes the bullets from the list */
+  display: flex;
+  justify-content: center; /* Centers the navbar items horizontally */
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  margin: 0 20px;         /* Spacing between navbar items */
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
