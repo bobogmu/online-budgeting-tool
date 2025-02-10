@@ -1,3 +1,4 @@
+import NodeButton from "../NodeButton/NodeButton";
 import "./Home.css";
 
 function Home() {
@@ -19,6 +20,11 @@ function Home() {
           <li>More to come...</li>
         </ul>
       </section>
+
+      <div className="button-grid">
+        <NodeButton label="Tools" link="tools"></NodeButton>
+        <NodeButton label="Contact" link="contact"></NodeButton>
+      </div>
     </div>
   );
 }
