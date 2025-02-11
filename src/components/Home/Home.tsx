@@ -1,4 +1,3 @@
-import NodeButton from "../NodeButton/NodeButton";
 import "./Home.css";
 
 function Home() {
@@ -17,14 +16,9 @@ function Home() {
         <ul>
           <li>Create budgets</li>
           <li>Track Expesnes</li>
-          <li>More to come...</li>
+          <li>Financial Calculators</li>
         </ul>
       </section>
-
-      <div className="button-grid">
-        <NodeButton label="Tools" link="tools"></NodeButton>
-        <NodeButton label="Contact" link="contact"></NodeButton>
-      </div>
     </div>
   );
 }

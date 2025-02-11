@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
+import logo from "../../assets/logo.jpg";
 
 function Header() {
   return (
@@ -7,7 +8,9 @@ function Header() {
       <nav>
         <ul className="main-nav">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <img src={logo} alt="OBT Logo" className="nav-logo" />
+            </Link>
           </li>
           <li>
             <Link to="tools">Tools</Link> {/* Use Link for navigation */}

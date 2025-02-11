@@ -1,36 +1,54 @@
-/* Header.css */
+/* Overall continer for main navigation bar*/
 .header {
   width: 100%;
   display: flex;
-  justify-content: center; /* Centers the navbar horizontally */
-  align-items: center;     /* Centers the navbar vertically (remove this if not needed) */
-  background-color: #333;
-  padding: 1rem 0;
-  position: absolute; /* Fixes the header at the top of the page */
-  top: 0;             /* Aligns it at the top of the page */
-  left: 0;            /* Ensures the header spans the full width */
+  justify-content: left; /* Keeps the logo aligned left */
+  align-items: center;    /* Centers the items vertically */
+  background-color: #1f76a1;
+  padding: 0 1rem;        /* Padding for spacing */
+  position: absolute;
+  top: 0;
+  left: 0;
   right: 0;
-  z-index: 1000;      /* Keeps the header above other content */
+  z-index: 1000;
+  height: 4rem;           /* Ensure a defined height for the navbar */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Adds a soft shadow around the navbar */
 }
 
+/* Element arrangemenet */
 nav ul {
-  list-style-type: none; /* Removes the bullets from the list */
+  list-style-type: none;
   display: flex;
-  justify-content: center; /* Centers the navbar items horizontally */
+  justify-content: center; 
   padding: 0;
   margin: 0;
+  height: 100%;           
 }
 
+/* Text arrangment */
 nav ul li {
   margin: 0 20px;         /* Spacing between navbar items */
+  display: flex;
+  align-items: center;    /* Vertically centers each nav item */
 }
 
+/* Text style */
 nav ul li a {
   color: white;
   text-decoration: none;
   font-size: 18px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: text-decoration 0.3s ease; /* Smooth transition */
 }
 
+/*Hover effects */
 nav ul li a:hover {
-  text-decoration: underline;
+  transform: scale(1.2); /* Enlarge link on hover */
+  color: #ffcc00;  /* Color to change to on hover */
+}
+
+/*Logo style */
+.nav-logo {
+  margin-right: auto; /* Pushes the rest of the nav items to the right */
+  height: 3rem;
 }

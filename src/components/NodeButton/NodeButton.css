@@ -1,17 +1,18 @@
 /* Custom button styles and layout */
 .button-grid {
-    display: grid; /* Enable grid layout */
+    display: flex; /* Flexbox layout */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid columns */
     gap: 20px; /* Space between grid items */
     padding: 20px; /* Add padding around the grid */
     justify-items: center; /* Center the items horizontally */
     align-items: center; /* Center the items vertically */
+    width: 100%;
   }
 
 .node-button {
     width: 100px; /* Set width */
     height: 100px; /* Set height to make it square */
-    background-color: #4CAF50; /* Green background */
+    background-color: #4d9fc9; /* Green background */
     color: white; /* White text */
     border: none; /* Remove border */
     border-radius: 8px; /* Rounded corners */
@@ -27,13 +28,8 @@
   
   /* Button hover effect */
   .node-button:hover {
-    background-color: #45a049; /* Darker green when hovering */
+    background-color: #134c68; /* Darker green when hovering */
     transform: scale(1.1); /* Slightly enlarge the button */
   }
-  
-  /* Button focus effect */
-  .node-button:focus {
-    outline: none; /* Remove default focus outline */
-    box-shadow: 0 0 10px rgba(0, 128, 0, 0.6); /* Add a green glow effect */
-  }
+
   

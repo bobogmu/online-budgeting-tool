@@ -9,12 +9,15 @@ function Tools() {
   return (
     <div>
       {/* Routes for tool page */}
-      <Routes>
-        {/* Explicit route */}
-        <Route path="budget" element={<Budget />} />
-        {/* Interest Calculator Route */}
-        <Route path="interest-calculator" element={<InterestCalculator />} />
-      </Routes>
+      <div className="tool-section">
+        <Routes>
+          {/* Route for budget */}
+          <Route path="budget" element={<Budget />} />
+          {/* Route for interest calculator */}
+          <Route path="interest-calculator" element={<InterestCalculator />} />
+        </Routes>
+      </div>
+      {/* Tool buttons */}
       <div className="button-grid">
         <NodeButton label="Budget" link="/tools/budget"></NodeButton>
         <NodeButton

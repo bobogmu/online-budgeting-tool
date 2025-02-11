@@ -3,7 +3,7 @@ import "./InterestCalculator.css";
 function InterestCalculator() {
   return (
     <div>
-      <h1>InterestCalculator</h1>
+      <h1>Interest Calculator</h1>
     </div>
   );
 }

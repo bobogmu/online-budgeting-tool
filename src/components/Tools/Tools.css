@@ -1,35 +1,18 @@
-/* Tools.css */
-#tools-nav {
-    background-color: green; /* Green background */
-    color: white; /* Gray text */
-    padding-top: 1rem;
-    position: fixed; /* Fixes the navbar at the top of the screen */
-    top: 3rem; /* Aligns it at the very top of the screen */
-    left: 0; /* Ensures it starts from the left edge */
-    width: 100%; /* Full width of the screen */
-    z-index: 1000; /* Ensures it stays on top of other content */
-  }
-  
-  #tools-nav .tools-nav {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center; /* Centers navbar items */
-  }
-  
-  #tools-nav .tools-nav li {
-    margin: 0 1rem;
-  }
-  
-  #tools-nav .tools-nav a {
-    color: white; /* Gray text */
-    text-decoration: none;
-    font-size: 1.2rem;
-  }
-  
-  #tools-nav .tools-nav a:hover {
-    color: white; /* White text on hover */
-    text-decoration: underline;
-  }
-  
+/* Custom button styles and layout */
+.button-grid {
+  display: flex; /* Use flexbox layout */
+  justify-content: center; /* Center buttons horizontally */
+  gap: 20px; /* Space between buttons */
+  padding: 20px; /* Add padding around the grid */
+  width: 100%;
+}
+
+/* Ensure the tool section takes full width */
+.tool-section {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center; /* Center content horizontally */
+  width: 100%; /* Ensure the section takes full width */
+  flex-grow: 1; /* Allow the section to grow and take available space */
+}
