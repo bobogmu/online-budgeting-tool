@@ -40,7 +40,7 @@ function Contact() {
           </div>
           {/* Email field */}
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+            <label htmlFor="email">Email address</label>
             <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           {/* Short answer/message field */}
