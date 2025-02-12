@@ -1,0 +1,78 @@
+.calculator-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    color: black;
+}
+
+.input-section, .output-section {
+    width: 45%;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: black;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+    background-color: white; /* Ensures dropdowns have white background */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.output-section p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: black;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.dollar-sign {
+    padding: 8px;
+    background-color: #e0e0e0;
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+    color: black;
+}
+
+.input-group input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    outline: none;
+}
