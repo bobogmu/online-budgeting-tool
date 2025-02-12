@@ -6,12 +6,13 @@ body {
     background-color: #f4f4f9; /* Light background for the page */
 }
   
+/* Take control */
 .take-control h1 {
     font-size: 2.5rem;
     color: #333; 
 }
 
-/* Section 1 - Take Control */
+
 .take-control {
     background-color: #4d9fc9; /* Green background */
     padding: 50px 20px;
@@ -19,6 +20,7 @@ body {
     margin-bottom: 40px;
     border-radius: 8px;
 }
+
 
 .take-control p {
     color: white; /* White text color */

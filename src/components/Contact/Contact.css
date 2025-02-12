@@ -1,0 +1,84 @@
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    height: 100vh;
+    background: #f4f4f9;
+    padding-top: 5rem;
+}
+
+.contact-container h1 {
+    color: #333; 
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.contact-container p {
+    color: #333; 
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+#contact-form {
+    width: 100%;
+    max-width: 1000px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+  /* Form elements */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+  
+label {
+    width: 300px; /* Consistent label width */
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    text-align: right; /* Right-align text for cleaner look */
+    margin-right: 20px; /* Space between label and input */
+}
+
+input,
+textarea {
+    width: 150%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+    background-color: white;
+    color: black;
+}
+
+/* Focus effect on inputs */
+input:focus,
+textarea:focus {
+    border-color: #007bff;
+}
+
+/* Submit button */
+button {
+    width: 100%;
+    background: #4d9fc9;
+    color: black;
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #134c68;
+}
