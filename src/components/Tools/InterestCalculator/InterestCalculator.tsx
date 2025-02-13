@@ -1,5 +1,3 @@
-// Inspriation: https://www.calculator.net/interest-calculator.html
-
 import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import './InterestCalculator.css';

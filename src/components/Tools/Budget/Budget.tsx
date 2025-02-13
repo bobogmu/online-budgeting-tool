@@ -15,6 +15,10 @@ function Budget() {
   const [totalMonthlyExpenses, setTotalMonthlyExpenses] = useState(0);
   const [totalYearlyExpenses, setTotalYearlyExpenses] = useState(0);
 
+  // Disposable income
+  const [monthlyDisposableIncome, setMonthlyDisposableIncome] = useState(0);
+  const [yearlyDisposableIncome, setYearlyDisposableIncome] = useState(0);
+
   // State to store monthly and yearly income
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [yearlyIncome, setYearlyIncome] = useState(0);
@@ -39,9 +43,6 @@ function Budget() {
 
     // Update state with the new expenses array
     setExpenses(updatedExpenses);
-
-    // Log updates
-    console.log('Updated Expenses:', updatedExpenses); // Logs the updated expenses to the console
   };
 
   // Calculate the users income based on frequency and amount
@@ -72,24 +73,20 @@ function Budget() {
   }, [incomeAmount, incomeFrequency]); // Depend on incomeAmount and incomeFrequency changes
 
   // Hook to execute when expenses changes to calculate total monthly and yearly expenses
-  // Filtesr out NaN so blank fields don't mess up calculations
+  // Filter out NaN so blank fields don't mess up calculations
   useEffect(() => {
     let monthlyTotal = expenses.reduce((sum, expense) => sum + (Number.isNaN(expense.amount) ? 0 : expense.amount), 0);
     setTotalMonthlyExpenses(monthlyTotal);
     setTotalYearlyExpenses(monthlyTotal * 12);
   }, [expenses]);
 
-  const calculateDisposableIncome = () => {
-    console.log('Calculating Budget');
-    console.log('Monthly Income: ' + monthlyIncome);
-    console.log('Yearly Income: ' + yearlyIncome);
-    console.log('Expenses: ' + totalMonthlyExpenses);
-    var yearlyExpenses = totalMonthlyExpenses * 12;
-    var yearlyDisposableIncome = yearlyIncome - yearlyExpenses;
-    console.log('Yearly Disposable Incom: ' + yearlyDisposableIncome);
-    return 0;
-  };
+  // Calculate monthly and yearly disposable income when expense or income changes
+  useEffect(() => {
+    setMonthlyDisposableIncome(monthlyIncome - totalMonthlyExpenses);
+    setYearlyDisposableIncome(yearlyIncome - totalYearlyExpenses);
+  }, [totalMonthlyExpenses, totalYearlyExpenses, monthlyIncome, yearlyIncome]);
 
+  // HTML
   return (
     // Main container for budget screen
     <div className="main">
@@ -133,15 +130,35 @@ function Budget() {
         </div>
         {/* Results / calculated values */}
       </div>
+      {/* Put results in a table */}
       <div className="output-container">
         <h1>Results</h1>
-        <p>Monthly Income: ${calculateIncome().monthly.toFixed(2)}</p>
-        <p>Yearly Income: ${calculateIncome().yearly.toFixed(2)}</p>
-        <p>Monthly Expenses: ${totalMonthlyExpenses.toFixed(2)}</p>
-        <p>Yearly Expenses: ${totalYearlyExpenses.toFixed(2)}</p>
-
-        <p>Monthly Disposable Income: ${calculateDisposableIncome().toFixed(2)}</p>
-        <p>Yearly Disposable Income: ${calculateDisposableIncome().toFixed(2)}</p>
+        <table className="results-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Monthly ($)</th>
+              <th>Yearly ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Income</td>
+              <td>{calculateIncome().monthly.toFixed(2)}</td>
+              <td>{calculateIncome().yearly.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Expenses</td>
+              <td>{totalMonthlyExpenses.toFixed(2)}</td>
+              <td>{totalYearlyExpenses.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Disposable</td>
+              <td>{monthlyDisposableIncome.toFixed(2)}</td>
+              <td>{yearlyDisposableIncome.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
