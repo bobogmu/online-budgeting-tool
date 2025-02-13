@@ -1,0 +1,84 @@
+.main {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: flex-start; /* Aligns content to the top */
+    gap: 20px; /* Space between the sections */
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+  
+  .input-section {
+    display: flex;
+    flex-direction: column; /* Stacks children vertically */
+    gap: 20px;
+  }
+  
+  .income-container,
+  .expense-container {
+    color: black;
+    width: 300px; /* Set a width to make it visually structured */
+    text-align: center; /* Centers the text inside */
+    padding: 5px;
+  }
+  
+  /* Keeps label & input in a single row */
+  .form-group-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%; /* Make sure it takes full width */
+    gap: 10px;
+  }
+  
+  /* Makes labels wide enough so they don't wrap */
+  .form-group-input label {
+    display: inline-block;
+    width: 180px; /* Increase width of labels */
+    font-weight: bold;
+    text-align: center; /* Keep labels aligned left */
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  /* Ensures input and dropdowns don't shrink */
+  .form-group-input select,
+  .form-group-input input {
+    vertical-align: baseline;
+    display: inline-block;
+    justify-content: center;
+    vertical-align: middle;
+    flex-grow: 1; /* Takes up remaining space */
+    min-width: 220px; /* Prevents shrinking */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Container for calculated values */
+  .output-container {
+    margin-left: 100px;
+    color: black;
+    width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centers the content inside */
+  }
+  
+
+  .add-expense-button{
+    width: 100%;
+    background: #4d9fc9;
+    color: black;
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
