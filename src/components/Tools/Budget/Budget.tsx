@@ -89,9 +89,9 @@ function Budget() {
   // HTML
   return (
     // Main container for budget screen
-    <div className="main">
+    <div className="budget-container">
       {/* Section for user to input all information */}
-      <div className="input-section">
+      <div className="input-section-budget">
         {/* Section for user to specify income*/}
         <div className="income-container">
           {/* Income frequency drop down*/}
@@ -131,7 +131,7 @@ function Budget() {
         {/* Results / calculated values */}
       </div>
       {/* Put results in a table */}
-      <div className="output-container">
+      <div className="output-container-budget">
         <h1>Results</h1>
         <table className="results-table">
           <thead>

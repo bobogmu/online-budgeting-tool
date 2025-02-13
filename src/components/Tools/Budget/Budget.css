@@ -1,4 +1,4 @@
-.main {
+.budget-container {
     display: flex;
     justify-content: center; /* Centers content horizontally */
     align-items: flex-start; /* Aligns content to the top */
@@ -10,7 +10,7 @@
     margin-bottom: 10px;
 }
   
-  .input-section {
+  .input-section-budget {
     display: flex;
     flex-direction: column; /* Stacks children vertically */
     gap: 20px;
@@ -60,7 +60,7 @@
   }
   
   /* Container for calculated values */
-  .output-container {
+  .output-container-budget {
     margin-left: 100px;
     color: black;
     width: 300px;

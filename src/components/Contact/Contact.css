@@ -32,14 +32,14 @@
 }
 
   /* Form elements */
-.form-group {
+  #contact-form .form-group {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
     margin-top: 0px;
 }
   
-label {
+#contact-form label {
     width: 300px; /* Consistent label width */
     font-weight: bold;
     font-size: 18px;
