@@ -103,3 +103,8 @@
     font-weight: bold;
     text-align: center;
   }
+
+  .delete-expense-button{
+    background: #4d9fc9;
+    color: #000;
+  }

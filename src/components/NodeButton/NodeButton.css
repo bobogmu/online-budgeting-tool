@@ -54,4 +54,9 @@
   transform: translateY(-130px); /* Move to normal position */
 }
 
+.node-button.disabled {
+  background-color: #b0b0b0; /* Grayed out */
+  cursor: not-allowed; /* Show "not allowed" cursor */
+}
+
   

@@ -28,6 +28,13 @@ function Budget() {
     setExpenses([...expenses, { description: '', amount: 0 }]);
   };
 
+  // Delete a row from the list of expenses
+  const deleteExpenseRow = (index: number) => {
+    // Create a new array with the selected expense removed
+    const updatedExpenses = expenses.filter((_, i) => i !== index);
+    setExpenses(updatedExpenses); // Update the state with the new array
+  };
+
   // Function to handle change in the inputs
   const handleExpenseChange = (index: number, field: 'description' | 'amount', value: string) => {
     // Create a new array with the updated expense data
@@ -119,6 +126,9 @@ function Budget() {
           {/* Dynamically render each expense row */}
           {expenses.map((expense, index) => (
             <div className="form-group-input" key={index}>
+              <button type="button" className="delete-expense-button" onClick={() => deleteExpenseRow(index)}>
+                Delete
+              </button>
               <input type="text" placeholder="Expense Description" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
               <input type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
             </div>
