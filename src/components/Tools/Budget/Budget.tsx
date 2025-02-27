@@ -23,6 +23,9 @@ function Budget() {
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [yearlyIncome, setYearlyIncome] = useState(0);
 
+  // States to track the last deleted expense
+  const [lastDeletedExpense, setLastDeletedExpense] = useState<{ description: string; amount: number } | null>(null);
+
   // Function to add a new row
   const addExpenseRow = () => {
     setExpenses([...expenses, { description: '', amount: 0 }]);
@@ -30,9 +33,18 @@ function Budget() {
 
   // Delete a row from the list of expenses
   const deleteExpenseRow = (index: number) => {
-    // Create a new array with the selected expense removed
+    const deletedExpense = expenses[index];
     const updatedExpenses = expenses.filter((_, i) => i !== index);
-    setExpenses(updatedExpenses); // Update the state with the new array
+    setExpenses(updatedExpenses); // Update the expenses list
+    setLastDeletedExpense(deletedExpense); // Store the last deleted expense
+  };
+
+  // Function to restore the last deleted expense
+  const undoDelete = () => {
+    if (lastDeletedExpense) {
+      setExpenses([...expenses, lastDeletedExpense]);
+      setLastDeletedExpense(null); // Clear the last deleted expense
+    }
   };
 
   // Function to handle change in the inputs
@@ -137,6 +149,12 @@ function Budget() {
           <button className="add-expense-button" onClick={addExpenseRow}>
             Add Expense
           </button>
+          {/* Undo Button */}
+          {lastDeletedExpense && (
+            <button className="delete-expense-undo-button" onClick={undoDelete}>
+              Undo Last Delete
+            </button>
+          )}
         </div>
         {/* Results / calculated values */}
       </div>

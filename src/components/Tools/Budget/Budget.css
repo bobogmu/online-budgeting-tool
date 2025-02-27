@@ -108,3 +108,15 @@
     background: #4d9fc9;
     color: #000;
   }
+
+  .delete-expense-undo-button{
+    margin-top: 10px;
+    width: 100%;
+    background: #4d9fc9;
+    color: black;
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
