@@ -1,35 +1,57 @@
 /* Custom button styles and layout */
 .button-grid {
-    display: flex; /* Flexbox layout */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid columns */
-    gap: 20px; /* Space between grid items */
-    padding: 20px; /* Add padding around the grid */
-    justify-items: center; /* Center the items horizontally */
-    align-items: center; /* Center the items vertically */
-    width: 100%;
-  }
+  display: flex; /* Flexbox layout */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Create responsive grid columns */
+  gap: 20px; /* Space between grid items */
+  padding: 20px; /* Add padding around the grid */
+  justify-items: center; /* Center the items horizontally */
+  align-items: center; /* Center the items vertically */
+  width: 100%;
+}
 
 .node-button {
-    width: 100px; /* Set width */
-    height: 100px; /* Set height to make it square */
-    background-color: #4d9fc9; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 18px; /* Larger text for readability */
-    font-weight: bold; /* Make text bold */
-    display: flex; /* Center text inside the button */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    text-transform: uppercase; /* Make text uppercase for a stronger look */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-  }
+  width: 100px; /* Set width */
+  height: 100px; /* Set height to make it square */
+  background-color: #4d9fc9; /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 18px; /* Larger text for readability */
+  font-weight: bold; /* Make text bold */
+  display: flex; /* Center text inside the button */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-transform: uppercase; /* Make text uppercase for a stronger look */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
   
   /* Button hover effect */
-  .node-button:hover {
-    background-color: #134c68; /* Darker green when hovering */
-    transform: scale(1.1); /* Slightly enlarge the button */
-  }
+.node-button:hover {
+  background-color: #134c68; /* Darker green when hovering */
+  transform: scale(1.1); /* Slightly enlarge the button */
+}
+
+/* Tooltip styles */
+.node-button-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent text from wrapping */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-30px); /* Start slightly above */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Show tooltip when hovering */
+.node-button-container:hover .node-button-tooltip {
+  opacity: 1;
+  transform: translateY(-130px); /* Move to normal position */
+}
 
   
