@@ -3,61 +3,111 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import './InterestCalculator.css';
 
 function InterestCalculator() {
-  const [initialInvestment, setInitialInvestment] = useState('');
-  const [annualContribution, setAnnualContribution] = useState('');
-  const [monthlyContribution, setMonthlyContribution] = useState('');
-  const [contributionTiming, setContributionTiming] = useState('End');
-  const [interestRate, setInterestRate] = useState('');
-  const [compound, setCompound] = useState('Annually');
-  const [investmentLength, setInvestmentLength] = useState('');
+    const [initialInvestment, setInitialInvestment] = useState('');
+    const [annualContribution, setAnnualContribution] = useState('');
+    const [monthlyContribution, setMonthlyContribution] = useState('');
+    const [contributionTiming, setContributionTiming] = useState('End');
+    const [interestRate, setInterestRate] = useState('');
+    const [compound, setCompound] = useState('Annually');
+    const [investmentLength, setInvestmentLength] = useState('');
 
-  const [endingBalance, setEndingBalance] = useState(0);
-  const [totalPrincipal, setTotalPrincipal] = useState(0);
-  const [totalContributions, setTotalContributions] = useState(0);
-  const [interestOfInitial, setInterestOfInitial] = useState(0);
-  const [interestOfContributions, setInterestOfContributions] = useState(0);
-  const [totalInterest, setTotalInterest] = useState(0);
+    interface ErrorState {
+        initialInvestment?: string;
+        annualContribution?: string;
+        monthlyContribution?: string;
+        interestRate?: string;
+        investmentLength?: string;
+    }
+
+    const [errors, setErrors] = useState<ErrorState>({});
+    const [endingBalance, setEndingBalance] = useState(0);
+    const [totalPrincipal, setTotalPrincipal] = useState(0);
+    const [totalContributions, setTotalContributions] = useState(0);
+    const [interestOfInitial, setInterestOfInitial] = useState(0);
+    const [interestOfContributions, setInterestOfContributions] = useState(0);
+    const [totalInterest, setTotalInterest] = useState(0);
+
+    const validateInputs = () => {
+        // eslint-disable-next-line prefer-const
+        let newErrors: {
+            initialInvestment?: string; interestRate?: string; investmentLength?: string;
+            annualContribution?: string; monthlyContribution?: string} = {};
+        if (!initialInvestment || parseFloat(initialInvestment) < 0) newErrors.initialInvestment = 'Enter a valid initial investment';
+        if (!annualContribution || parseFloat(annualContribution) < 0) newErrors.annualContribution = 'Enter a valid annual contribution';
+        if (!monthlyContribution || parseFloat(monthlyContribution) < 0) newErrors.monthlyContribution = 'Enter a valid monthly contribution';
+        if (!interestRate || parseFloat(interestRate) < 0) newErrors.interestRate = 'Enter a valid interest rate';
+        if (!investmentLength || parseFloat(investmentLength) <= 0) newErrors.investmentLength = 'Enter a valid investment length';
+        if (parseFloat(initialInvestment) > 1000000000) newErrors.initialInvestment = 'Initial investment max value is 1,000,000,000';
+        if (parseFloat(annualContribution) > 1000000000) newErrors.annualContribution = 'Annual contribution max value is 1,000,000,000';
+        if (parseFloat(monthlyContribution) > 1000000000) newErrors.monthlyContribution = 'Monthly contribution max value is 1,000,000,000';
+        if (parseFloat(interestRate) > 1000) newErrors.interestRate = 'Interest rate max value is 1,000';
+        if (parseFloat(investmentLength) > 10000) newErrors.investmentLength = 'Investment length max value is 10,000';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
   const compoundOptions = ['Annually', 'Semi-Annually', 'Quarterly', 'Monthly', 'Daily', 'Continuously'];
   const timingOptions = ['Beginning', 'End'];
 
-  const calculateInvestment = () => {
-    const P = parseFloat(initialInvestment) || 0;
-    const r = (parseFloat(interestRate) || 0) / 100;
-    const n = compound === 'Continuously' ? 0 : compound === 'Annually' ? 1 : compound === 'Semi-Annually' ? 2 : compound === 'Quarterly' ? 4 : compound === 'Monthly' ? 12 : 365;
-    const t = (parseFloat(investmentLength) || 0) / 12;
-    const totalMonths = parseFloat(investmentLength) || 0;
-    const monthlyContrib = parseFloat(monthlyContribution) || 0;
-    const annualContrib = parseFloat(annualContribution) || 0;
+    const calculateInvestment = () => {
+        if (!validateInputs()) return;
 
-    // Interest on Initial Investment
-    const A = n === 0 ? P * Math.exp(r * t) : P * Math.pow(1 + r / n, n * t);
-    const interestOnInitial = A - P;
+        const P = parseFloat(initialInvestment) || 0;
+        const r = (parseFloat(interestRate) || 0) / 100;
+        const t = parseFloat(investmentLength) / 12 || 0;
+        const totalMonths = parseFloat(investmentLength) || 0;
+        const monthlyContrib = parseFloat(monthlyContribution) || 0;
+        const annualContrib = parseFloat(annualContribution) || 0;
 
-    // Interest on Contributions
-    let contribTotal = 0;
-    let interestOnContribs = 0;
+        let A, interestOnInitial, contribTotal = 0, interestOnContribs = 0;
 
-    for (let i = 1; i <= totalMonths; i++) {
-      let factor = Math.pow(1 + r / n, n * ((totalMonths - i) / 12));
-      if (contributionTiming === 'Beginning') factor *= 1 + r / n;
-      contribTotal += monthlyContrib;
-      interestOnContribs += monthlyContrib * (factor - 1);
-    }
-    for (let i = 1; i <= t; i++) {
-      let factor = Math.pow(1 + r / n, n * (t - i));
-      if (contributionTiming === 'Beginning') factor *= 1 + r / n;
-      contribTotal += annualContrib;
-      interestOnContribs += annualContrib * (factor - 1);
-    }
+        if (compound === 'Continuously') {
+            A = P * Math.exp(r * t);
+            interestOnInitial = A - P;
 
-    setEndingBalance(A + contribTotal + interestOnContribs);
-    setTotalPrincipal(P);
-    setTotalContributions(contribTotal);
-    setInterestOfInitial(interestOnInitial);
-    setInterestOfContributions(interestOnContribs);
-    setTotalInterest(interestOnInitial + interestOnContribs);
-  };
+            // Continuous formula for contributions: FV = PMT * (e^(rt) - 1) / r
+            for (let i = 1; i <= totalMonths; i++) {
+                let factor = Math.exp(r * ((totalMonths - i) / 12)) - 1;
+                if (contributionTiming === 'Beginning') factor *= Math.exp(r / 12);
+                contribTotal += monthlyContrib;
+                interestOnContribs += monthlyContrib * factor;
+            }
+
+            for (let i = 1; i <= t; i++) {
+                let factor = Math.exp(r * (t - i)) - 1;
+                if (contributionTiming === 'Beginning') factor *= Math.exp(r);
+                contribTotal += annualContrib;
+                interestOnContribs += annualContrib * factor;
+            }
+        } else {
+            const n = compound === 'Annually' ? 1 : compound === 'Semi-Annually' ? 2 :
+                compound === 'Quarterly' ? 4 : compound === 'Monthly' ? 12 : 365;
+            A = P * Math.pow(1 + r / n, n * t);
+            interestOnInitial = A - P;
+
+            for (let i = 1; i <= totalMonths; i++) {
+                let factor = Math.pow(1 + r / n, n * ((totalMonths - i) / 12)) - 1;
+                if (contributionTiming === 'Beginning') factor *= 1 + r / n;
+                contribTotal += monthlyContrib;
+                interestOnContribs += monthlyContrib * factor;
+            }
+
+            for (let i = 1; i <= t; i++) {
+                let factor = Math.pow(1 + r / n, n * (t - i)) - 1;
+                if (contributionTiming === 'Beginning') factor *= 1 + r / n;
+                contribTotal += annualContrib;
+                interestOnContribs += annualContrib * factor;
+            }
+        }
+
+        setEndingBalance(A + contribTotal + interestOnContribs);
+        setTotalPrincipal(P);
+        setTotalContributions(contribTotal);
+        setInterestOfInitial(interestOnInitial);
+        setInterestOfContributions(interestOnContribs);
+        setTotalInterest(interestOnInitial + interestOnContribs);
+    };
+
 
   const data = [
     { name: 'Initial Investment', value: totalPrincipal, color: '#007bff' }, // Blue
@@ -67,25 +117,36 @@ function InterestCalculator() {
 
   return (
     <div className="calculator-container">
-      <div className="input-section">
+          <div className="input-section">
+
         <h2>Investment Details</h2>
 
-        <label>Initial Investment:</label>
-        <div className="input-group">
-          <span className="dollar-sign">$</span>
-          <input type="number" value={initialInvestment} onChange={(e) => setInitialInvestment(e.target.value)} />
-        </div>
+              <div className="input-group">
+                  <label>Initial Investment:</label>
+                  <div className="input-wrapper">
+                      <span className="dollar-sign">$</span>
+                      <input type="number" value={initialInvestment} onChange={(e) => setInitialInvestment(e.target.value)} />
+                  </div>
+                  {errors.initialInvestment && <p className="error-text">{errors.initialInvestment}</p>}
+              </div>
+
 
         <label>Annual Contribution:</label>
-        <div className="input-group">
+              <div className="input-group">
+                  <div className="input-wrapper">
           <span className="dollar-sign">$</span>
           <input type="number" value={annualContribution} onChange={(e) => setAnnualContribution(e.target.value)} />
-        </div>
+                  </div>
+                  {errors.annualContribution && <p className="error-text">{errors.annualContribution}</p>}
+             </div>
 
         <label>Monthly Contribution:</label>
-        <div className="input-group">
+              <div className="input-group">
+                  <div className="input-wrapper">
           <span className="dollar-sign">$</span>
-          <input type="number" value={monthlyContribution} onChange={(e) => setMonthlyContribution(e.target.value)} />
+                      <input type="number" value={monthlyContribution} onChange={(e) => setMonthlyContribution(e.target.value)} />
+                  </div>
+                  {errors.monthlyContribution && <p className="error-text">{errors.monthlyContribution}</p>}
         </div>
 
         <label>Contribution Timing:</label>
@@ -98,7 +159,8 @@ function InterestCalculator() {
         </select>
 
         <label>Interest Rate (% per year):</label>
-        <input type="number" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} />
+              <input type="number" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} />
+              {errors.interestRate && <p className="error-text">{errors.interestRate}</p>}
 
         <label>Compounding:</label>
         <select className="dropdown" value={compound} onChange={(e) => setCompound(e.target.value)}>
@@ -110,7 +172,8 @@ function InterestCalculator() {
         </select>
 
         <label>Investment Length (months):</label>
-        <input type="number" value={investmentLength} onChange={(e) => setInvestmentLength(e.target.value)} />
+              <input type="number" value={investmentLength} onChange={(e) => setInvestmentLength(e.target.value)} />
+              {errors.investmentLength && <p className="error-text">{errors.investmentLength}</p>}
 
         <button onClick={calculateInvestment}>Calculate</button>
       </div>

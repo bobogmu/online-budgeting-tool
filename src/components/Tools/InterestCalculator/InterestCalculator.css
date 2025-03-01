@@ -56,11 +56,31 @@ button {
 
 .input-group {
     display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-wrapper {
+    display: flex;
     align-items: center;
     border: 1px solid #ccc;
+    padding: 0px;
     border-radius: 5px;
-    overflow: hidden;
 }
+
+    .input-wrapper input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 5px;
+    }
+
+.error-text {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
 
 .dollar-sign {
     padding: 8px;
