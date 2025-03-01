@@ -54,7 +54,10 @@ function Contact() {
           </button>
         </form>
       ) : (
-        <p>Thank you for your message! We'll get back to you soon.</p>
+        <div className="contact-message-container">
+          <div className="contact-message">Thank you for your message, it has been received by the OBT team!</div>
+          <div className="contact-message">We will respond within 24 hours to your email address from support@obt.com</div>
+        </div>
       )}
     </div>
   );
