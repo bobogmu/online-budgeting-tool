@@ -65,7 +65,6 @@ function InterestCalculator() {
             A = P * Math.exp(r * t);
             interestOnInitial = A - P;
 
-            // Continuous formula for contributions: FV = PMT * (e^(rt) - 1) / r
             for (let i = 1; i <= totalMonths; i++) {
                 let factor = Math.exp(r * ((totalMonths - i) / 12)) - 1;
                 if (contributionTiming === 'Beginning') factor *= Math.exp(r / 12);
