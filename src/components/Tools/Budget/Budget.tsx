@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import './Budget.css';
 
 function Budget() {
+  // Initialize cookies
+  const [cookies, setCookie] = useCookies(['budget']);
+  const savedData = cookies.budget || {};
+
   //Variables for income
-  const [incomeFrequency, setIncomeFrequency] = useState('');
-  const [incomeAmount, setIncomeAmount] = useState('');
+  const [incomeFrequency, setIncomeFrequency] = useState(savedData.incomeFrequency || '');
+  const [incomeAmount, setIncomeAmount] = useState(savedData.incomeAmount || '');
 
   // Manage multiple rows of expenses
   // array of objects where each object has two properties, a string and a number
   // The array will be appended to as the user addes expenses
-  const [expenses, setExpenses] = useState<{ description: string; amount: number }[]>([]);
+  const [expenses, setExpenses] = useState<{ description: string; amount: number }[]>(savedData.expenses || []);
 
   // States to store monthly expenses and yearly expenses
   const [totalMonthlyExpenses, setTotalMonthlyExpenses] = useState(0);
@@ -24,7 +29,12 @@ function Budget() {
   const [yearlyIncome, setYearlyIncome] = useState(0);
 
   // States to track the last deleted expense
-  const [lastDeletedExpense, setLastDeletedExpense] = useState<{ description: string; amount: number } | null>(null);
+  const [lastDeletedExpense, setLastDeletedExpense] = useState(savedData.lastDeletedExpense || null);
+
+  // Save required data to cookies
+  const saveToCookies = () => {
+    setCookie('budget', { incomeFrequency, incomeAmount, expenses, lastDeletedExpense }, { path: '/', maxAge: 7 * 24 * 60 * 60 }); // Expires in 7 days
+  };
 
   // Function to add a new row
   const addExpenseRow = () => {
@@ -104,6 +114,11 @@ function Budget() {
     setMonthlyDisposableIncome(monthlyIncome - totalMonthlyExpenses);
     setYearlyDisposableIncome(yearlyIncome - totalYearlyExpenses);
   }, [totalMonthlyExpenses, totalYearlyExpenses, monthlyIncome, yearlyIncome]);
+
+  // Save data to cookies whenever income frequency, income amount, or expenses change
+  useEffect(() => {
+    saveToCookies();
+  }, [incomeFrequency, incomeAmount, expenses, lastDeletedExpense]);
 
   // HTML
   return (
