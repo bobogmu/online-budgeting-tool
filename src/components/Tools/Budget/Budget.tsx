@@ -170,7 +170,7 @@ function Budget() {
         {/* Section for user to specify expenses */}
         {/* Expenses Section */}
         <div className="expense-container">
-          <h1>Monthly Expenses</h1>
+          <h1>Expenses</h1>
           {/* Dynamically render each expense row */}
           {expenses.map((expense, index) => (
             <div className="form-group-input-expenses" key={index}>
