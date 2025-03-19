@@ -167,12 +167,17 @@ function InterestCalculator() {
                     <label>Initial Investment:</label>
                     <div className="input-wrapper">
                         <span className="dollar-sign">$</span>
-                        <input
-                            type="number"
-                            value={initialInvestment}
-                            onChange={(e) => setInitialInvestment(e.target.value)}
-                            onBlur={() => handleBlur('initialInvestment', initialInvestment)}
-                        />
+                        <div className="tooltip-wrapper">
+                            <input
+                                type="number"
+                                value={initialInvestment}
+                                onChange={(e) => setInitialInvestment(e.target.value)}
+                                onBlur={() => handleBlur('initialInvestment', initialInvestment)}
+                            />
+                            <div className="tooltip-content">
+                                Enter the amount you are starting your investment with.
+                            </div>
+                        </div>
                     </div>
                     {errors.initialInvestment && <p className="error-text">{errors.initialInvestment}</p>}
                 </div>
@@ -182,12 +187,17 @@ function InterestCalculator() {
                     <label>Annual Contribution:</label>
                     <div className="input-wrapper">
                         <span className="dollar-sign">$</span>
-                        <input
-                            type="number"
-                            value={annualContribution}
-                            onChange={(e) => setAnnualContribution(e.target.value)}
-                            onBlur={() => handleBlur('annualContribution', annualContribution)}
-                        />
+                        <div className="tooltip-wrapper">
+                            <input
+                                type="number"
+                                value={annualContribution}
+                                onChange={(e) => setAnnualContribution(e.target.value)}
+                                onBlur={() => handleBlur('annualContribution', annualContribution)}
+                            />
+                            <div className="tooltip-content">
+                                Enter the total amount you plan to contribute each year.
+                            </div>
+                        </div>
                     </div>
                     {errors.annualContribution && <p className="error-text">{errors.annualContribution}</p>}
                 </div>
@@ -197,67 +207,92 @@ function InterestCalculator() {
                     <label>Monthly Contribution:</label>
                     <div className="input-wrapper">
                         <span className="dollar-sign">$</span>
-                        <input
-                            type="number"
-                            value={monthlyContribution}
-                            onChange={(e) => setMonthlyContribution(e.target.value)}
-                            onBlur={() => handleBlur('monthlyContribution', monthlyContribution)}
-                        />
+                        <div className="tooltip-wrapper">
+                            <input
+                                type="number"
+                                value={monthlyContribution}
+                                onChange={(e) => setMonthlyContribution(e.target.value)}
+                                onBlur={() => handleBlur('monthlyContribution', monthlyContribution)}
+                            />
+                            <div className="tooltip-content">
+                                Enter the amount you contribute on a monthly basis.
+                            </div>
+                        </div>
                     </div>
                     {errors.monthlyContribution && <p className="error-text">{errors.monthlyContribution}</p>}
                 </div>
 
                 {/* Contribution Timing */}
                 <label>Contribution Timing:</label>
-                <select
-                    className="dropdown"
-                    value={contributionTiming}
-                    onChange={(e) => setContributionTiming(e.target.value)}
-                    onBlur={() => handleBlur('contributionTiming', contributionTiming)}
-                >
-                    {timingOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
+                <div className="tooltip-wrapper">
+                    <select
+                        className="dropdown"
+                        value={contributionTiming}
+                        onChange={(e) => setContributionTiming(e.target.value)}
+                        onBlur={() => handleBlur('contributionTiming', contributionTiming)}
+                    >
+                        {timingOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="tooltip-content">
+                        Select whether contributions are made at the beginning or end of the period.
+                    </div>
+                </div>
 
                 {/* Interest Rate */}
                 <div className="input-group">
                     <label>Interest Rate (% per year):</label>
-                    <input
-                        type="number"
-                        value={interestRate}
-                        onChange={(e) => setInterestRate(e.target.value)}
-                        onBlur={() => handleBlur('interestRate', interestRate)}
-                    />
+                    <div className="tooltip-wrapper">
+                        <input
+                            type="number"
+                            value={interestRate}
+                            onChange={(e) => setInterestRate(e.target.value)}
+                            onBlur={() => handleBlur('interestRate', interestRate)}
+                        />
+                        <div className="tooltip-content">
+                            Enter the annual interest rate in percentage (e.g., 5 for 5%).
+                        </div>
+                    </div>
                     {errors.interestRate && <p className="error-text">{errors.interestRate}</p>}
                 </div>
 
                 {/* Compounding */}
                 <label>Compounding:</label>
-                <select
-                    className="dropdown"
-                    value={compound}
-                    onChange={(e) => setCompound(e.target.value)}
-                    onBlur={() => handleBlur('compound', compound)}
-                >
-                    {compoundOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
+                <div className="tooltip-wrapper">
+                    <select
+                        className="dropdown"
+                        value={compound}
+                        onChange={(e) => setCompound(e.target.value)}
+                        onBlur={() => handleBlur('compound', compound)}
+                    >
+                        {compoundOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="tooltip-content">
+                        Choose how often the interest is compounded (e.g., annually, monthly).
+                    </div>
+                </div>
 
                 {/* Investment Length */}
                 <div className="input-group">
                     <label>Investment Length (months):</label>
-                    <input
-                        type="number"
-                        value={investmentLength}
-                        onChange={(e) => setInvestmentLength(e.target.value)}
-                        onBlur={() => handleBlur('investmentLength', investmentLength)}
-                    />
+                    <div className="tooltip-wrapper">
+                        <input
+                            type="number"
+                            value={investmentLength}
+                            onChange={(e) => setInvestmentLength(e.target.value)}
+                            onBlur={() => handleBlur('investmentLength', investmentLength)}
+                        />
+                        <div className="tooltip-content">
+                            Enter the total duration of your investment in months.
+                        </div>
+                    </div>
                     {errors.investmentLength && <p className="error-text">{errors.investmentLength}</p>}
                 </div>
 

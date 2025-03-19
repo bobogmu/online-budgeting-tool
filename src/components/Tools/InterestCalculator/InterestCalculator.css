@@ -90,9 +90,35 @@ button {
     color: black;
 }
 
-.input-group input {
-    flex: 1;
-    border: none;
-    padding: 8px;
-    outline: none;
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Ensure the wrapper spans the full width */
 }
+
+    .tooltip-wrapper input {
+        width: 100%; /* Make the input field fill the wrapper */
+        box-sizing: border-box; /* Include padding and borders in the width calculation */
+    }
+
+    .tooltip-wrapper .tooltip-content {
+        visibility: hidden;
+        width: 200px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Position the tooltip above the field */
+        left: 50%;
+        transform: translateX(-50%); /* Center align the tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip-wrapper:hover .tooltip-content {
+        visibility: visible;
+        opacity: 1;
+    }
