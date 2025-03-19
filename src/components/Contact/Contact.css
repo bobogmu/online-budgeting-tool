@@ -82,3 +82,28 @@ button {
 button:hover {
     background: #134c68;
 }
+
+/* Default message box */
+.contact-message-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the message horizontally */
+    align-items: center; /* Center the message vertically */
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .contact-message {
+    font-size: 2.0rem;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    background-color: #f8f9fa; /* Light background */
+    padding: 20px;
+    border: 2px solid #4d9fc9; /* Blue border to match your theme */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 700px; /* Limit width to prevent it from being too wide */
+    width: 100%;
+    margin-top: 20px;
+  }

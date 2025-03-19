@@ -23,9 +23,28 @@ function Budget() {
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [yearlyIncome, setYearlyIncome] = useState(0);
 
+  // States to track the last deleted expense
+  const [lastDeletedExpense, setLastDeletedExpense] = useState<{ description: string; amount: number } | null>(null);
+
   // Function to add a new row
   const addExpenseRow = () => {
     setExpenses([...expenses, { description: '', amount: 0 }]);
+  };
+
+  // Delete a row from the list of expenses
+  const deleteExpenseRow = (index: number) => {
+    const deletedExpense = expenses[index];
+    const updatedExpenses = expenses.filter((_, i) => i !== index);
+    setExpenses(updatedExpenses); // Update the expenses list
+    setLastDeletedExpense(deletedExpense); // Store the last deleted expense
+  };
+
+  // Function to restore the last deleted expense
+  const undoDelete = () => {
+    if (lastDeletedExpense) {
+      setExpenses([...expenses, lastDeletedExpense]);
+      setLastDeletedExpense(null); // Clear the last deleted expense
+    }
   };
 
   // Function to handle change in the inputs
@@ -119,6 +138,9 @@ function Budget() {
           {/* Dynamically render each expense row */}
           {expenses.map((expense, index) => (
             <div className="form-group-input" key={index}>
+              <button type="button" className="delete-expense-button" onClick={() => deleteExpenseRow(index)}>
+                Delete
+              </button>
               <input type="text" placeholder="Expense Description" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
               <input type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
             </div>
@@ -127,6 +149,12 @@ function Budget() {
           <button className="add-expense-button" onClick={addExpenseRow}>
             Add Expense
           </button>
+          {/* Undo Button */}
+          {lastDeletedExpense && (
+            <button className="delete-expense-undo-button" onClick={undoDelete}>
+              Undo Last Delete
+            </button>
+          )}
         </div>
         {/* Results / calculated values */}
       </div>

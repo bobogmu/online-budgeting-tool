@@ -61,7 +61,7 @@
   
   /* Container for calculated values */
   .output-container-budget {
-    margin-left: 100px;
+    margin-left: 150px;
     color: black;
     width: 300px;
     padding: 20px;
@@ -102,4 +102,21 @@
     background-color: #ddd;
     font-weight: bold;
     text-align: center;
+  }
+
+  .delete-expense-button{
+    background: #4d9fc9;
+    color: #000;
+  }
+
+  .delete-expense-undo-button{
+    margin-top: 10px;
+    width: 100%;
+    background: #4d9fc9;
+    color: black;
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 8px;
+    cursor: pointer;
   }

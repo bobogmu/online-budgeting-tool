@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Budget from './Budget/Budget';
 import InterestCalculator from './InterestCalculator/InterestCalculator';
 import NodeButton from '../NodeButton/NodeButton';
@@ -6,6 +6,18 @@ import NodeButton from '../NodeButton/NodeButton';
 import './Tools.css';
 
 function Tools() {
+  // Gets the current route
+  const location = useLocation();
+
+  // Function to check if we should disasbled a certain button
+  const isButtonDisabled = (path: string) => {
+    return location.pathname === path;
+  };
+
+  console.log('Interest Button Disabled:', isButtonDisabled('/tools/budget'));
+  console.log('Interest Button Disabled:', isButtonDisabled('/tools/interest-calculator'));
+
+  console.log('Current location:', location.pathname); // Print to console
   return (
     <div>
       {/* Routes for tool page */}
@@ -30,8 +42,8 @@ function Tools() {
       <div className="tool-box">
         <div className="tool-box-title">Tool Box</div>
         <div className="button-grid">
-          <NodeButton label="Budget" link="/tools/budget" description="Manage your income and expenses with our budget tool."></NodeButton>
-          <NodeButton label="Interest" link="/tools/interest-calculator" description="Perform interest calculations for your finances."></NodeButton>
+          <NodeButton label="Budget" link="/tools/budget" description="Manage your income and expenses with our budget tool." disabled={isButtonDisabled('/tools/budget')}></NodeButton>
+          <NodeButton label="Interest" link="/tools/interest-calculator" description="Perform interest calculations for your finances." disabled={isButtonDisabled('/tools/interest-calculator')}></NodeButton>
         </div>
       </div>
     </div>
