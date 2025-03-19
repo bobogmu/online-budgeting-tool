@@ -14,7 +14,7 @@ function Budget() {
   // Manage multiple rows of expenses
   // array of objects where each object has two properties, a string and a number
   // The array will be appended to as the user addes expenses
-  const [expenses, setExpenses] = useState<{ description: string; amount: number }[]>(savedData.expenses || []);
+  const [expenses, setExpenses] = useState<{ description: string; amount: number; frequency: string }[]>(savedData.expenses || []);
 
   // States to store monthly expenses and yearly expenses
   const [totalMonthlyExpenses, setTotalMonthlyExpenses] = useState(0);
@@ -38,7 +38,7 @@ function Budget() {
 
   // Function to add a new row
   const addExpenseRow = () => {
-    setExpenses([...expenses, { description: '', amount: 0 }]);
+    setExpenses([...expenses, { description: '', amount: 0, frequency: '' }]);
   };
 
   // Delete a row from the list of expenses
@@ -58,15 +58,17 @@ function Budget() {
   };
 
   // Function to handle change in the inputs
-  const handleExpenseChange = (index: number, field: 'description' | 'amount', value: string) => {
+  const handleExpenseChange = (index: number, field: 'description' | 'amount' | 'frequency', value: string) => {
     // Create a new array with the updated expense data
     const updatedExpenses = [...expenses];
 
     if (field === 'amount') {
       // Ensure the value is a number for the 'amount' field
       updatedExpenses[index][field] = parseFloat(value);
+    } else if (field === 'description') {
+      // Tt's a description (a string)
+      updatedExpenses[index][field] = value;
     } else {
-      // Otherwise, it's a description (a string)
       updatedExpenses[index][field] = value;
     }
 
@@ -104,9 +106,28 @@ function Budget() {
   // Hook to execute when expenses changes to calculate total monthly and yearly expenses
   // Filter out NaN so blank fields don't mess up calculations
   useEffect(() => {
-    let monthlyTotal = expenses.reduce((sum, expense) => sum + (Number.isNaN(expense.amount) ? 0 : expense.amount), 0);
+    // Calcuate total expenses based on frequency
+    let monthlyTotal = expenses.reduce((sum, expense) => {
+      let amount = Number.isNaN(expense.amount) ? 0 : expense.amount;
+      let frequencyMultiplier = 0;
+
+      // Determine multiplier based on frequency
+      if (expense.frequency === 'weekly') {
+        frequencyMultiplier = 4.33; // Average weeks per month
+      } else if (expense.frequency === 'biweekly') {
+        frequencyMultiplier = 2.17; // Average biweeks per month
+      } else if (expense.frequency === 'monthly') {
+        frequencyMultiplier = 1; // Monthly already
+      } else if (expense.frequency === 'yearly') {
+        frequencyMultiplier = 1 / 12; // Convert yearly to monthly
+      }
+
+      // Apply the frequency multiplier to the expense amount and accumulate the total
+      return sum + amount * frequencyMultiplier;
+    }, 0);
+
     setTotalMonthlyExpenses(monthlyTotal);
-    setTotalYearlyExpenses(monthlyTotal * 12);
+    setTotalYearlyExpenses(monthlyTotal * 12); // Yearly total is just the monthly total multiplied by 12
   }, [expenses]);
 
   // Calculate monthly and yearly disposable income when expense or income changes
@@ -130,7 +151,7 @@ function Budget() {
         <div className="income-container">
           {/* Income frequency drop down*/}
           <h1>Income</h1>
-          <div className="form-group-input">
+          <div className="form-group-input-income">
             <label htmlFor="incomeFrequency">Income Frequency:</label>
             <select id="incomeFrequency" value={incomeFrequency} onChange={(e) => setIncomeFrequency(e.target.value)}>
               <option value="">Select Frequency</option>
@@ -141,7 +162,7 @@ function Budget() {
             </select>
           </div>
           {/* Income amount text box*/}
-          <div className="form-group-input">
+          <div className="form-group-input-income">
             <label htmlFor="incomeAmount">Income Amount ($):</label>
             <input id="incomeAmount" type="number" value={incomeAmount} onChange={(e) => setIncomeAmount(e.target.value)} placeholder="Enter net income" />
           </div>
@@ -152,12 +173,19 @@ function Budget() {
           <h1>Monthly Expenses</h1>
           {/* Dynamically render each expense row */}
           {expenses.map((expense, index) => (
-            <div className="form-group-input" key={index}>
+            <div className="form-group-input-expenses" key={index}>
               <button type="button" className="delete-expense-button" onClick={() => deleteExpenseRow(index)}>
                 Delete
               </button>
-              <input type="text" placeholder="Expense Name" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
-              <input type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
+              <select id="expenseFrequency" value={expense.frequency} onChange={(e) => handleExpenseChange(index, 'frequency', e.target.value)}>
+                <option value="">Select Frequency</option>
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Bi-Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+              <input id="expenseDescription" type="text" placeholder="Expense Name" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
+              <input id="expenseAmount" type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
             </div>
           ))}
           {/* Add expense button */}
