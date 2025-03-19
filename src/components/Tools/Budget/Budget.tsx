@@ -156,7 +156,7 @@ function Budget() {
               <button type="button" className="delete-expense-button" onClick={() => deleteExpenseRow(index)}>
                 Delete
               </button>
-              <input type="text" placeholder="Expense Description" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
+              <input type="text" placeholder="Expense Name" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
               <input type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
             </div>
           ))}
