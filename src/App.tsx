@@ -1,11 +1,12 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Contact from "./components/Contact/Contact";
-import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
-import Tools from "./components/Tools/Tools";
+import Contact from './components/Contact/Contact';
+import Header from './components/Header/Header';
+import Home from './components/Home/Home';
+import Tools from './components/Tools/Tools';
+import Help from './components/Help/Help';
 
-import "./App.css";
+import './App.css';
 
 function App() {
   return (
@@ -13,10 +14,7 @@ function App() {
       <Header /> {/* Header component with navbar */}
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
-        <Route path="tools/*" element={<Tools />} />{" "}
-        <Route path="contact" element={<Contact />} />{" "}
-        {/* About page (example) */}
-        {/* Add more routes as needed */}
+        <Route path="tools/*" element={<Tools />} /> <Route path="contact" element={<Contact />} /> <Route path="help" element={<Help />} />
       </Routes>
     </Router>
   );

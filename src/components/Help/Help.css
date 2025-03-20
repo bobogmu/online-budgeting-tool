@@ -1,0 +1,54 @@
+.help-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 40px;
+    background-color: #f9f9f9;
+    max-width: 700px;
+  }
+  
+  .help-container h1 {
+    color: #4d9fc9;
+    margin-bottom: 20px;
+  }
+  
+  .important-terms h1 {
+    color: #4d9fc9;
+    margin-bottom: 10px;
+  }
+  
+  .terms-list {
+    margin-top: 20px;
+  }
+  
+  .term-item {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #4d9fc9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .term-item h3 {
+    color: #4d9fc9;
+    margin-bottom: 10px;
+  }
+  
+  .term-item p {
+    color: #555;
+  }
+  
+  .term-item ul {
+    list-style: none;
+    padding-left: 0px; /* Adjust for bullet alignment */
+  }
+  
+  .term-item li {
+    margin-bottom: 8px;
+    padding-left: 8px;
+    text-indent: -8px; /* Aligns text with bullet */
+  }
+  
+  .term-item li strong {
+    flex: 0 0 180px;
+  }

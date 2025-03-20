@@ -1,6 +1,6 @@
 {
     "proseWrap": "never",
-    "printWidth": 1000,
+    "printWidth": 100000,
     "trailingComma": "none",
     "bracketSpacing": true,
     "semi": true,

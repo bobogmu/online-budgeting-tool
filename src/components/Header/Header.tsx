@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import "./Header.css";
-import logo from "../../assets/logo.jpg";
+import { Link } from 'react-router-dom';
+import './Header.css';
+import logo from '../../assets/logo.jpg';
 
 function Header() {
   return (
@@ -17,6 +17,9 @@ function Header() {
           </li>
           <li>
             <Link to="contact">Contact</Link> {/* Use Link for navigation */}
+          </li>
+          <li>
+            <Link to="help">Help</Link> {/* Use Link for navigation */}
           </li>
         </ul>
       </nav>
