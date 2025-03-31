@@ -3,6 +3,12 @@ import { useCookies } from 'react-cookie';
 import './Budget.css';
 
 function Budget() {
+  // Max input number allowed
+  const MAX_NUMBER = 10000000;
+
+  // Max allowable string input length
+  const MAX_STRING_LEN = 20;
+
   // Initialize cookies
   const [cookies, setCookie] = useCookies(['budget']);
   const savedData = cookies.budget || {};
@@ -57,17 +63,49 @@ function Budget() {
     }
   };
 
+  // Function to handle income change and apply constraints
+  const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // Allow an empty field
+    if (value === '') {
+      setIncomeAmount(value);
+      return;
+    }
+
+    // Prevent entry of minus sign
+    if (value.includes('-')) {
+      return;
+    }
+
+    // Ensure only numbers and at most one decimal point
+    if (/^\d*(\.\d{0,2})?$/.test(value)) {
+      const numericValue = parseFloat(value);
+      if (numericValue <= MAX_NUMBER) {
+        setIncomeAmount(value); // Update state with the valid input
+      }
+    }
+  };
+
   // Function to handle change in the inputs
   const handleExpenseChange = (index: number, field: 'description' | 'amount' | 'frequency', value: string) => {
+    //TODO: Add in logic to prevent negative numbers, numbers that are too large, and non numbers
+
     // Create a new array with the updated expense data
     const updatedExpenses = [...expenses];
 
+    // Conditionals to pick right logic to apply for expense change
     if (field === 'amount') {
-      // Ensure the value is a number for the 'amount' field
-      updatedExpenses[index][field] = parseFloat(value);
+      const numericValue = parseFloat(value);
+      // If under max, or empty string, and valid input, allow update
+      if ((numericValue <= MAX_NUMBER || value === '') && /^\d*(\.\d{0,2})?$/.test(value)) {
+        updatedExpenses[index][field] = parseFloat(value);
+      }
     } else if (field === 'description') {
-      // Tt's a description (a string)
-      updatedExpenses[index][field] = value;
+      // If under max string length
+      if (value.length <= MAX_STRING_LEN) {
+        updatedExpenses[index][field] = value;
+      }
     } else {
       updatedExpenses[index][field] = value;
     }
@@ -164,7 +202,7 @@ function Budget() {
           {/* Income amount text box*/}
           <div className="form-group-input-income">
             <label htmlFor="incomeAmount">Income Amount ($):</label>
-            <input id="incomeAmount" type="number" value={incomeAmount} onChange={(e) => setIncomeAmount(e.target.value)} placeholder="Enter net income" />
+            <input id="incomeAmount" type="text" value={incomeAmount} onChange={handleIncomeChange} placeholder="Enter net income" />
           </div>
         </div>
         {/* Section for user to specify expenses */}
