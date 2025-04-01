@@ -1,14 +1,23 @@
+/* Container: center both sections with spacing */
 .calculator-container {
     display: flex;
-    justify-content: space-between;
-    max-width: 800px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    max-width: 1200px;
     margin: auto;
     padding: 20px;
     color: black;
 }
-
-.input-section, .output-section {
+ 
+.output-section {
     width: 45%;
+}
+
+/* Left side: inputs and progress */
+.input-section {
+    width: 45%;
+    text-align: center;
 }
 
 h2 {
@@ -122,3 +131,113 @@ button {
         visibility: visible;
         opacity: 1;
     }
+
+/* Boxed input area */
+.input-box {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+/* Progress bar styling */
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.progress-step {
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 3px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+    .progress-step.current {
+        color: green;
+        border-color: green;
+    }
+
+    .progress-step.completed {
+        color: blue;
+        border-color: blue;
+    }
+
+    .progress-step.not-done {
+        color: #6c757d;
+        border-color: #ccc;
+    }
+
+/* Navigation buttons */
+.button-group {
+    margin-top: 15px;
+}
+
+    .button-group button {
+        width: 45%;
+        padding: 10px;
+        margin: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .button-group button:hover {
+            background-color: #0056b3;
+        }
+
+/* Disabled button style */
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Recalculate button styling */
+.recalc-container {
+    margin-top: 10px;
+}
+
+    .recalc-container button {
+        width: 60%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .recalc-container button:hover {
+            background-color: #1e7e34;
+        }
+
+/* Right side: results box */
+.output-section {
+    width: 45%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.results-box p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+/* Center the pie chart */
+.pie-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}

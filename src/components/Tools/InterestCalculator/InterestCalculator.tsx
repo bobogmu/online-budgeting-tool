@@ -1,328 +1,255 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import './InterestCalculator.css';
 
-function InterestCalculator() {
-    const [initialInvestment, setInitialInvestment] = useState('');
-    const [annualContribution, setAnnualContribution] = useState('');
-    const [monthlyContribution, setMonthlyContribution] = useState('');
-    const [contributionTiming, setContributionTiming] = useState('End');
-    const [interestRate, setInterestRate] = useState('');
-    const [compound, setCompound] = useState('Annually');
-    const [investmentLength, setInvestmentLength] = useState('');
+// Each step includes numeric bounds for validation.
+const stepsConfig = [
+    {
+        key: 'initialInvestment',
+        label: 'Initial Investment',
+        description: 'Enter the amount you are starting with (0 to 100,000,000).',
+        validate: (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0 && num <= 100000000;
+        },
+    },
+    {
+        key: 'annualContribution',
+        label: 'Annual Contribution',
+        description: 'Enter your annual contribution (0 to 100,000,000).',
+        validate: (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0 && num <= 100000000;
+        },
+    },
+    {
+        key: 'monthlyContribution',
+        label: 'Monthly Contribution',
+        description: 'Enter your monthly contribution (0 to 1,000,000).',
+        validate: (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0 && num <= 1000000;
+        },
+    },
+    {
+        key: 'interestRate',
+        label: 'Interest Rate (%)',
+        description: 'Enter the annual interest rate (0 to 100%).',
+        validate: (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num >= 0 && num <= 100;
+        },
+    },
+    {
+        key: 'investmentLength',
+        label: 'Investment Length (months)',
+        description: 'Enter the number of months (1 to 1200).',
+        validate: (value) => {
+            const num = parseFloat(value);
+            return !isNaN(num) && num > 0 && num <= 1200;
+        },
+    },
+];
 
-    interface ErrorState {
-        initialInvestment?: string;
-        annualContribution?: string;
-        monthlyContribution?: string;
-        interestRate?: string;
-        investmentLength?: string;
-    }
+function StepByStepInterestCalculator() {
+    const [formData, setFormData] = useState({
+        initialInvestment: '',
+        annualContribution: '',
+        monthlyContribution: '',
+        interestRate: '',
+        investmentLength: '',
+    });
 
-    const [errors, setErrors] = useState<ErrorState>({});
-    const [endingBalance, setEndingBalance] = useState(0);
-    const [totalPrincipal, setTotalPrincipal] = useState(0);
-    const [totalContributions, setTotalContributions] = useState(0);
-    const [interestOfInitial, setInterestOfInitial] = useState(0);
-    const [interestOfContributions, setInterestOfContributions] = useState(0);
-    const [totalInterest, setTotalInterest] = useState(0);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [errors, setErrors] = useState({});
+    const [result, setResult] = useState(null);
 
+    // On mount: load saved data from localStorage.
     useEffect(() => {
-        const savedValues = {
+        const storedData = {
             initialInvestment: localStorage.getItem('initialInvestment') || '',
             annualContribution: localStorage.getItem('annualContribution') || '',
             monthlyContribution: localStorage.getItem('monthlyContribution') || '',
-            contributionTiming: localStorage.getItem('contributionTiming') || 'End',
             interestRate: localStorage.getItem('interestRate') || '',
-            compound: localStorage.getItem('compound') || 'Annually',
             investmentLength: localStorage.getItem('investmentLength') || '',
         };
-
-        // Set the state for all fields
-        setInitialInvestment(savedValues.initialInvestment);
-        setAnnualContribution(savedValues.annualContribution);
-        setMonthlyContribution(savedValues.monthlyContribution);
-        setContributionTiming(savedValues.contributionTiming);
-        setInterestRate(savedValues.interestRate);
-        setCompound(savedValues.compound);
-        setInvestmentLength(savedValues.investmentLength);
+        setFormData(storedData);
     }, []);
 
-    useEffect(() => {
-        // Only attempt calculation if all fields are filled
-        if (
-            initialInvestment.trim() !== '' &&
-            annualContribution.trim() !== '' &&
-            monthlyContribution.trim() !== '' &&
-            interestRate.trim() !== '' &&
-            investmentLength.trim() !== ''
-        ) {
-            calculateInvestment();
+    // Update input value and save to localStorage.
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        localStorage.setItem(name, value);
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+    };
+
+    // Validate the current step’s input.
+    const validateCurrentStep = () => {
+        const currentConfig = stepsConfig[currentStep];
+        const value = formData[currentConfig.key];
+        if (!currentConfig.validate(value)) {
+            setErrors((prev) => ({
+                ...prev,
+                [currentConfig.key]: `Please enter a valid value for ${currentConfig.label.toLowerCase()}`,
+            }));
+            return false;
         }
-    }, [initialInvestment, annualContribution, monthlyContribution, interestRate, investmentLength, contributionTiming, compound]);
-
-
-
-
-
-    const handleBlur = (key: string, value: string) => {
-        localStorage.setItem(key, value);
+        return true;
     };
 
-    const validateInputs = () => {
-        // eslint-disable-next-line prefer-const
-        let newErrors: {
-            initialInvestment?: string; interestRate?: string; investmentLength?: string;
-            annualContribution?: string; monthlyContribution?: string
-        } = {};
-        if (!initialInvestment || parseFloat(initialInvestment) < 0) newErrors.initialInvestment = 'Enter a valid initial investment';
-        if (!annualContribution || parseFloat(annualContribution) < 0) newErrors.annualContribution = 'Enter a valid annual contribution';
-        if (!monthlyContribution || parseFloat(monthlyContribution) < 0) newErrors.monthlyContribution = 'Enter a valid monthly contribution';
-        if (!interestRate || parseFloat(interestRate) < 0) newErrors.interestRate = 'Enter a valid interest rate';
-        if (!investmentLength || parseFloat(investmentLength) <= 0) newErrors.investmentLength = 'Enter a valid investment length';
-        if (parseFloat(initialInvestment) > 1000000000) newErrors.initialInvestment = 'Initial investment max value is 1,000,000,000';
-        if (parseFloat(annualContribution) > 1000000000) newErrors.annualContribution = 'Annual contribution max value is 1,000,000,000';
-        if (parseFloat(monthlyContribution) > 1000000000) newErrors.monthlyContribution = 'Monthly contribution max value is 1,000,000,000';
-        if (parseFloat(interestRate) > 1000) newErrors.interestRate = 'Interest rate max value is 1,000';
-        if (parseFloat(investmentLength) > 10000) newErrors.investmentLength = 'Investment length max value is 10,000';
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    // Go to the next step if the current input is valid.
+    const nextStep = () => {
+        if (validateCurrentStep() && currentStep < stepsConfig.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
     };
 
-    const compoundOptions = ['Annually', 'Semi-Annually', 'Quarterly', 'Monthly', 'Daily', 'Continuously'];
-    const timingOptions = ['Beginning', 'End'];
-
-    const calculateInvestment = () => {
-        if (!validateInputs()) return;
-
-        const P = parseFloat(initialInvestment) || 0;
-        const r = (parseFloat(interestRate) || 0) / 100;
-        const t = parseFloat(investmentLength) / 12 || 0;
-        const totalMonths = parseFloat(investmentLength) || 0;
-        const monthlyContrib = parseFloat(monthlyContribution) || 0;
-        const annualContrib = parseFloat(annualContribution) || 0;
-
-        let A, interestOnInitial, contribTotal = 0, interestOnContribs = 0;
-
-        if (compound === 'Continuously') {
-            A = P * Math.exp(r * t);
-            interestOnInitial = A - P;
-
-            for (let i = 1; i <= totalMonths; i++) {
-                let factor = Math.exp(r * ((totalMonths - i) / 12)) - 1;
-                if (contributionTiming === 'Beginning') factor *= Math.exp(r / 12);
-                contribTotal += monthlyContrib;
-                interestOnContribs += monthlyContrib * factor;
-            }
-
-            for (let i = 1; i <= t; i++) {
-                let factor = Math.exp(r * (t - i)) - 1;
-                if (contributionTiming === 'Beginning') factor *= Math.exp(r);
-                contribTotal += annualContrib;
-                interestOnContribs += annualContrib * factor;
-            }
+    // Allow jumping between steps (you can adjust to prevent forward navigation if desired).
+    const jumpToStep = (index) => {
+        if (index < currentStep) {
+            setCurrentStep(index);
+        } else if (index === currentStep) {
+            return;
         } else {
-            const n = compound === 'Annually' ? 1 : compound === 'Semi-Annually' ? 2 :
-                compound === 'Quarterly' ? 4 : compound === 'Monthly' ? 12 : 365;
-            A = P * Math.pow(1 + r / n, n * t);
-            interestOnInitial = A - P;
-
-            for (let i = 1; i <= totalMonths; i++) {
-                let factor = Math.pow(1 + r / n, n * ((totalMonths - i) / 12)) - 1;
-                if (contributionTiming === 'Beginning') factor *= 1 + r / n;
-                contribTotal += monthlyContrib;
-                interestOnContribs += monthlyContrib * factor;
-            }
-
-            for (let i = 1; i <= t; i++) {
-                let factor = Math.pow(1 + r / n, n * (t - i)) - 1;
-                if (contributionTiming === 'Beginning') factor *= 1 + r / n;
-                contribTotal += annualContrib;
-                interestOnContribs += annualContrib * factor;
+            if (validateCurrentStep()) {
+                setCurrentStep(index);
             }
         }
-
-        setEndingBalance(A + contribTotal + interestOnContribs);
-        setTotalPrincipal(P);
-        setTotalContributions(contribTotal);
-        setInterestOfInitial(interestOnInitial);
-        setInterestOfContributions(interestOnContribs);
-        setTotalInterest(interestOnInitial + interestOnContribs);
     };
 
+    // Calculation logic (triggered manually by the user).
+    const calculateResults = () => {
+        // Validate every field.
+        let valid = true;
+        stepsConfig.forEach((step) => {
+            if (!step.validate(formData[step.key])) {
+                valid = false;
+                setErrors((prev) => ({
+                    ...prev,
+                    [step.key]: `Please enter a valid value for ${step.label.toLowerCase()}`,
+                }));
+            }
+        });
+        if (!valid) return;
 
-    const data = [
-        { name: 'Initial Investment', value: totalPrincipal, color: '#007bff' }, // Blue
-        { name: 'Contributions', value: totalContributions, color: '#28a745' }, // Green
-        { name: 'Total Interest Earned', value: totalInterest, color: '#dc3545' } // Red
-    ];
+        const P = parseFloat(formData.initialInvestment);
+        const r = parseFloat(formData.interestRate) / 100;
+        const t = parseFloat(formData.investmentLength) / 12;
+        const annualContrib = parseFloat(formData.annualContribution);
+        const monthlyContrib = parseFloat(formData.monthlyContribution);
+
+        // Basic compound calculation.
+        const A = P * Math.pow(1 + r, t);
+        const totalContrib = annualContrib * t + monthlyContrib * parseFloat(formData.investmentLength);
+        const interestEarned = A - P;
+        const endingBalance = A + totalContrib + interestEarned;
+
+        setResult({
+            endingBalance,
+            totalPrincipal: P,
+            totalContributions: totalContrib,
+            interestEarned,
+        });
+    };
 
     return (
         <div className="calculator-container">
+            {/* Left Section: Progress Bar & Input Area */}
             <div className="input-section">
-                <h2>Investment Details</h2>
-
-                {/* Initial Investment */}
-                <div className="input-group">
-                    <label>Initial Investment:</label>
-                    <div className="input-wrapper">
-                        <span className="dollar-sign">$</span>
-                        <div className="tooltip-wrapper">
-                            <input
-                                type="number"
-                                value={initialInvestment}
-                                onChange={(e) => setInitialInvestment(e.target.value)}
-                                onBlur={() => handleBlur('initialInvestment', initialInvestment)}
-                            />
-                            <div className="tooltip-content">
-                                Enter the amount you are starting your investment with.
+                <div className="progress-bar">
+                    {stepsConfig.map((step, index) => {
+                        let className = 'progress-step';
+                        if (index === currentStep) {
+                            className += ' current';
+                        } else if (index < currentStep) {
+                            className += ' completed';
+                        } else {
+                            className += ' not-done';
+                        }
+                        return (
+                            <div key={index} className={className} onClick={() => jumpToStep(index)}>
+                                {step.label}
                             </div>
+                        );
+                    })}
+                </div>
+                <div className="input-box">
+                    <h2>{stepsConfig[currentStep].label}</h2>
+                    <p>{stepsConfig[currentStep].description}</p>
+                    <input
+                        type="number"
+                        name={stepsConfig[currentStep].key}
+                        value={formData[stepsConfig[currentStep].key]}
+                        onChange={handleInputChange}
+                        // Added onKeyDown handler:
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                if (currentStep < stepsConfig.length - 1) {
+                                    nextStep();
+                                } else {
+                                    calculateResults();
+                                }
+                            }
+                        }}
+                    />
+                    {errors[stepsConfig[currentStep].key] && (
+                        <p className="error-text">{errors[stepsConfig[currentStep].key]}</p>
+                    )}
+                    <div className="button-group">
+                        {currentStep > 0 && (
+                            <button onClick={() => setCurrentStep(currentStep - 1)}>Back</button>
+                        )}
+                        {currentStep < stepsConfig.length - 1 ? (
+                            <button onClick={nextStep}>Next</button>
+                        ) : (
+                            <button onClick={calculateResults}>Calculate</button>
+                        )}
+                    </div>
+                    {/* The Recalculate button will appear only after a calculation is done */}
+                    {result && (
+                        <div className="recalc-container">
+                            <button onClick={calculateResults}>Recalculate</button>
                         </div>
-                    </div>
-                    {errors.initialInvestment && <p className="error-text">{errors.initialInvestment}</p>}
+                    )}
                 </div>
-
-                {/* Annual Contribution */}
-                <div className="input-group">
-                    <label>Annual Contribution:</label>
-                    <div className="input-wrapper">
-                        <span className="dollar-sign">$</span>
-                        <div className="tooltip-wrapper">
-                            <input
-                                type="number"
-                                value={annualContribution}
-                                onChange={(e) => setAnnualContribution(e.target.value)}
-                                onBlur={() => handleBlur('annualContribution', annualContribution)}
-                            />
-                            <div className="tooltip-content">
-                                Enter the total amount you plan to contribute each year.
-                            </div>
-                        </div>
-                    </div>
-                    {errors.annualContribution && <p className="error-text">{errors.annualContribution}</p>}
-                </div>
-
-                {/* Monthly Contribution */}
-                <div className="input-group">
-                    <label>Monthly Contribution:</label>
-                    <div className="input-wrapper">
-                        <span className="dollar-sign">$</span>
-                        <div className="tooltip-wrapper">
-                            <input
-                                type="number"
-                                value={monthlyContribution}
-                                onChange={(e) => setMonthlyContribution(e.target.value)}
-                                onBlur={() => handleBlur('monthlyContribution', monthlyContribution)}
-                            />
-                            <div className="tooltip-content">
-                                Enter the amount you contribute on a monthly basis.
-                            </div>
-                        </div>
-                    </div>
-                    {errors.monthlyContribution && <p className="error-text">{errors.monthlyContribution}</p>}
-                </div>
-
-                {/* Contribution Timing */}
-                <label>Contribution Timing:</label>
-                <div className="tooltip-wrapper">
-                    <select
-                        className="dropdown"
-                        value={contributionTiming}
-                        onChange={(e) => setContributionTiming(e.target.value)}
-                        onBlur={() => handleBlur('contributionTiming', contributionTiming)}
-                    >
-                        {timingOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                    <div className="tooltip-content">
-                        Select whether contributions are made at the beginning or end of the period.
-                    </div>
-                </div>
-
-                {/* Interest Rate */}
-                <div className="input-group">
-                    <label>Interest Rate (% per year):</label>
-                    <div className="tooltip-wrapper">
-                        <input
-                            type="number"
-                            value={interestRate}
-                            onChange={(e) => setInterestRate(e.target.value)}
-                            onBlur={() => handleBlur('interestRate', interestRate)}
-                        />
-                        <div className="tooltip-content">
-                            Enter the annual interest rate in percentage (e.g., 5 for 5%).
-                        </div>
-                    </div>
-                    {errors.interestRate && <p className="error-text">{errors.interestRate}</p>}
-                </div>
-
-                {/* Compounding */}
-                <label>Compounding:</label>
-                <div className="tooltip-wrapper">
-                    <select
-                        className="dropdown"
-                        value={compound}
-                        onChange={(e) => setCompound(e.target.value)}
-                        onBlur={() => handleBlur('compound', compound)}
-                    >
-                        {compoundOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                    <div className="tooltip-content">
-                        Choose how often the interest is compounded (e.g., annually, monthly).
-                    </div>
-                </div>
-
-                {/* Investment Length */}
-                <div className="input-group">
-                    <label>Investment Length (months):</label>
-                    <div className="tooltip-wrapper">
-                        <input
-                            type="number"
-                            value={investmentLength}
-                            onChange={(e) => setInvestmentLength(e.target.value)}
-                            onBlur={() => handleBlur('investmentLength', investmentLength)}
-                        />
-                        <div className="tooltip-content">
-                            Enter the total duration of your investment in months.
-                        </div>
-                    </div>
-                    {errors.investmentLength && <p className="error-text">{errors.investmentLength}</p>}
-                </div>
-
-                <button onClick={calculateInvestment}>Calculate</button>
             </div>
 
-            {/* Output Section */}
-            <div className="output-section">
-                <h2>Results</h2>
-                <p>Ending Balance: ${endingBalance.toFixed(2)}</p>
-                <p>Total Principal: ${totalPrincipal.toFixed(2)}</p>
-                <p>Total Contributions: ${totalContributions.toFixed(2)}</p>
-                <p>Interest on Initial Investment: ${interestOfInitial.toFixed(2)}</p>
-                <p>Interest on Contributions: ${interestOfContributions.toFixed(2)}</p>
-                <p>
-                    <strong>Total Interest Earned:</strong> ${totalInterest.toFixed(2)}
-                </p>
-
-                <PieChart width={400} height={300}>
-                    <Pie data={data} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="value">
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                    {totalInterest > 0 && <Legend />}
-                </PieChart>
-            </div>
+            {/* Right Section: Output (only renders if there is a result) */}
+            {result && (
+                <div className="output-section">
+                    <div className="results-box">
+                        <h2>Results</h2>
+                        <p>Ending Balance: ${result.endingBalance.toFixed(2)}</p>
+                        <p>Total Principal: ${result.totalPrincipal.toFixed(2)}</p>
+                        <p>Total Contributions: ${result.totalContributions.toFixed(2)}</p>
+                        <p>Total Interest Earned: ${result.interestEarned.toFixed(2)}</p>
+                        <div className="pie-chart-container">
+                            <PieChart width={400} height={300}>
+                                <Pie
+                                    data={[
+                                        { name: 'Principal', value: result.totalPrincipal, color: '#007bff' },
+                                        { name: 'Contributions', value: result.totalContributions, color: '#28a745' },
+                                        { name: 'Interest', value: result.interestEarned, color: '#dc3545' },
+                                    ]}
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={100}
+                                    dataKey="value"
+                                >
+                                    {['#007bff', '#28a745', '#dc3545'].map((color, index) => (
+                                        <Cell key={`cell-${index}`} fill={color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
 
-export default InterestCalculator;
+export default StepByStepInterestCalculator;

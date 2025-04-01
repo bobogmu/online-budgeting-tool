@@ -1,4 +1,5 @@
 import './Home.css';
+import budget_video from '../../assets/Budget_Tool.mp4';
 
 function Home() {
   return (
@@ -7,7 +8,12 @@ function Home() {
       <section className="take-control">
         <h1>Take Control of Your Finances</h1>
         <p>The Online Budgeting Tool (OBT) provides users with everything they need to manage their money efficiently.</p>
-        <button className="cta-button">View available tools now</button>
+        <div className="video-container">
+          <video controls width="600" height="400" autoPlay muted>
+            <source src={budget_video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </section>
 
       <section className="features">
