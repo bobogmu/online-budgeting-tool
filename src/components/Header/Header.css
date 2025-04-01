@@ -52,3 +52,9 @@ nav ul li a:hover {
   margin-right: auto; /* Pushes the rest of the nav items to the right */
   height: 3rem;
 }
+
+.active-link {
+  font-weight: bold;
+  color: #ffcc00; /* Highlight color */
+  border-bottom: 2px solid #ffcc00; /* Underline effect */
+}

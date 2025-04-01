@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 import logo from '../../assets/logo.jpg';
 
 function Header() {
+  const location = useLocation(); // Get current URL path
+
   return (
     <header className="header">
       <nav>
@@ -13,13 +15,19 @@ function Header() {
             </Link>
           </li>
           <li>
-            <Link to="tools">Tools</Link> {/* Use Link for navigation */}
+            <Link to="/tools" className={location.pathname.startsWith('/tools') ? 'active-link' : ''}>
+              Tools
+            </Link>
           </li>
           <li>
-            <Link to="contact">Contact</Link> {/* Use Link for navigation */}
+            <Link to="/contact" className={location.pathname.startsWith('/contact') ? 'active-link' : ''}>
+              Contact
+            </Link>
           </li>
           <li>
-            <Link to="help">Help</Link> {/* Use Link for navigation */}
+            <Link to="/help" className={location.pathname.startsWith('/help') ? 'active-link' : ''}>
+              Help
+            </Link>
           </li>
         </ul>
       </nav>
