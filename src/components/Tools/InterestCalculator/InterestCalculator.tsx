@@ -1,14 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import './InterestCalculator.css';
 
-// Each step includes numeric bounds for validation.
-const stepsConfig = [
+interface FormData {
+    initialInvestment: string;
+    annualContribution: string;
+    monthlyContribution: string;
+    interestRate: string;
+    investmentLength: string;
+}
+
+interface CalculatorResult {
+    endingBalance: number;
+    totalPrincipal: number;
+    totalContributions: number;
+    interestEarned: number;
+}
+
+interface StepConfig {
+    key: keyof FormData;
+    label: string;
+    description: string;
+    validate: (value: string) => boolean;
+}
+
+const stepsConfig: StepConfig[] = [
     {
         key: 'initialInvestment',
         label: 'Initial Investment',
         description: 'Enter the amount you are starting with (0 to 100,000,000).',
-        validate: (value) => {
+        validate: (value: string) => {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0 && num <= 100000000;
         },
@@ -17,7 +38,7 @@ const stepsConfig = [
         key: 'annualContribution',
         label: 'Annual Contribution',
         description: 'Enter your annual contribution (0 to 100,000,000).',
-        validate: (value) => {
+        validate: (value: string) => {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0 && num <= 100000000;
         },
@@ -26,7 +47,7 @@ const stepsConfig = [
         key: 'monthlyContribution',
         label: 'Monthly Contribution',
         description: 'Enter your monthly contribution (0 to 1,000,000).',
-        validate: (value) => {
+        validate: (value: string) => {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0 && num <= 1000000;
         },
@@ -35,7 +56,7 @@ const stepsConfig = [
         key: 'interestRate',
         label: 'Interest Rate (%)',
         description: 'Enter the annual interest rate (0 to 100%).',
-        validate: (value) => {
+        validate: (value: string) => {
             const num = parseFloat(value);
             return !isNaN(num) && num >= 0 && num <= 100;
         },
@@ -44,7 +65,7 @@ const stepsConfig = [
         key: 'investmentLength',
         label: 'Investment Length (months)',
         description: 'Enter the number of months (1 to 1200).',
-        validate: (value) => {
+        validate: (value: string) => {
             const num = parseFloat(value);
             return !isNaN(num) && num > 0 && num <= 1200;
         },
@@ -52,7 +73,7 @@ const stepsConfig = [
 ];
 
 function StepByStepInterestCalculator() {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         initialInvestment: '',
         annualContribution: '',
         monthlyContribution: '',
@@ -60,13 +81,13 @@ function StepByStepInterestCalculator() {
         investmentLength: '',
     });
 
-    const [currentStep, setCurrentStep] = useState(0);
-    const [errors, setErrors] = useState({});
-    const [result, setResult] = useState(null);
+    const [currentStep, setCurrentStep] = useState<number>(0);
+    const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+    const [result, setResult] = useState<CalculatorResult | null>(null);
 
     // On mount: load saved data from localStorage.
     useEffect(() => {
-        const storedData = {
+        const storedData: FormData = {
             initialInvestment: localStorage.getItem('initialInvestment') || '',
             annualContribution: localStorage.getItem('annualContribution') || '',
             monthlyContribution: localStorage.getItem('monthlyContribution') || '',
@@ -77,7 +98,7 @@ function StepByStepInterestCalculator() {
     }, []);
 
     // Update input value and save to localStorage.
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         localStorage.setItem(name, value);
@@ -85,7 +106,7 @@ function StepByStepInterestCalculator() {
     };
 
     // Validate the current step’s input.
-    const validateCurrentStep = () => {
+    const validateCurrentStep = (): boolean => {
         const currentConfig = stepsConfig[currentStep];
         const value = formData[currentConfig.key];
         if (!currentConfig.validate(value)) {
@@ -105,8 +126,8 @@ function StepByStepInterestCalculator() {
         }
     };
 
-    // Allow jumping between steps (you can adjust to prevent forward navigation if desired).
-    const jumpToStep = (index) => {
+    // Allow jumping between steps.
+    const jumpToStep = (index: number) => {
         if (index < currentStep) {
             setCurrentStep(index);
         } else if (index === currentStep) {
@@ -153,6 +174,16 @@ function StepByStepInterestCalculator() {
         });
     };
 
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (currentStep < stepsConfig.length - 1) {
+                nextStep();
+            } else {
+                calculateResults();
+            }
+        }
+    };
+
     return (
         <div className="calculator-container">
             {/* Left Section: Progress Bar & Input Area */}
@@ -182,16 +213,7 @@ function StepByStepInterestCalculator() {
                         name={stepsConfig[currentStep].key}
                         value={formData[stepsConfig[currentStep].key]}
                         onChange={handleInputChange}
-                        // Added onKeyDown handler:
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                if (currentStep < stepsConfig.length - 1) {
-                                    nextStep();
-                                } else {
-                                    calculateResults();
-                                }
-                            }
-                        }}
+                        onKeyDown={handleKeyDown}
                     />
                     {errors[stepsConfig[currentStep].key] && (
                         <p className="error-text">{errors[stepsConfig[currentStep].key]}</p>
