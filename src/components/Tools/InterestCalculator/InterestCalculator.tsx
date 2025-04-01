@@ -7,28 +7,28 @@ const stepsConfig = [
     {
         key: 'initialInvestment',
         label: 'Initial Investment',
-        description: 'Enter the amount you are starting with (0 to 1,000,000).',
+        description: 'Enter the amount you are starting with (0 to 100,000,000).',
         validate: (value) => {
             const num = parseFloat(value);
-            return !isNaN(num) && num >= 0 && num <= 1000000;
+            return !isNaN(num) && num >= 0 && num <= 100000000;
         },
     },
     {
         key: 'annualContribution',
         label: 'Annual Contribution',
-        description: 'Enter your annual contribution (0 to 1,000,000).',
+        description: 'Enter your annual contribution (0 to 100,000,000).',
         validate: (value) => {
             const num = parseFloat(value);
-            return !isNaN(num) && num >= 0 && num <= 1000000;
+            return !isNaN(num) && num >= 0 && num <= 100000000;
         },
     },
     {
         key: 'monthlyContribution',
         label: 'Monthly Contribution',
-        description: 'Enter your monthly contribution (0 to 100,000).',
+        description: 'Enter your monthly contribution (0 to 1,000,000).',
         validate: (value) => {
             const num = parseFloat(value);
-            return !isNaN(num) && num >= 0 && num <= 100000;
+            return !isNaN(num) && num >= 0 && num <= 1000000;
         },
     },
     {
@@ -43,10 +43,10 @@ const stepsConfig = [
     {
         key: 'investmentLength',
         label: 'Investment Length (months)',
-        description: 'Enter the number of months (1 to 600).',
+        description: 'Enter the number of months (1 to 1200).',
         validate: (value) => {
             const num = parseFloat(value);
-            return !isNaN(num) && num > 0 && num <= 600;
+            return !isNaN(num) && num > 0 && num <= 1200;
         },
     },
 ];
@@ -79,11 +79,8 @@ function StepByStepInterestCalculator() {
     // Update input value and save to localStorage.
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        // Save change in state...
         setFormData({ ...formData, [name]: value });
-        // ...and to localStorage so data persists.
         localStorage.setItem(name, value);
-        // Clear any associated error.
         setErrors((prev) => ({ ...prev, [name]: '' }));
     };
 
@@ -185,6 +182,16 @@ function StepByStepInterestCalculator() {
                         name={stepsConfig[currentStep].key}
                         value={formData[stepsConfig[currentStep].key]}
                         onChange={handleInputChange}
+                        // Added onKeyDown handler:
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                if (currentStep < stepsConfig.length - 1) {
+                                    nextStep();
+                                } else {
+                                    calculateResults();
+                                }
+                            }
+                        }}
                     />
                     {errors[stepsConfig[currentStep].key] && (
                         <p className="error-text">{errors[stepsConfig[currentStep].key]}</p>
