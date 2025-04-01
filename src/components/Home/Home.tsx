@@ -5,7 +5,7 @@ import budget_video from '../../assets/Budget_Tool.mp4';
 
 function Home() {
   return (
-    <div>
+    <div className="home-page-container">
       {/* Section for user to specify expenses */}
       <section className="take-control">
         <h1>Take Control of Your Finances</h1>
@@ -56,6 +56,13 @@ function Home() {
       <section className="testimonials">
         <h1>What Our Users Say</h1>
         <p>"OBT has helped me save more and spend smarter!" - Sarah M.</p>
+        <p>"I finally feel in control of my budget. Thanks, OBT!" - James T.</p>
+        <p>"The tools are easy to use, and I’m seeing real results." - Emma L.</p>
+        <p>"OBT made managing my finances so much easier. Highly recommend!" - Brian H.</p>
+        <p>"Thanks to OBT, I can track my expenses and plan for the future!" - Natalie R.</p>
+        <p>"A game changer for anyone who wants to get serious about their finances." - Michael W.</p>
+        <p>"OBT has given me the clarity I needed to stick to my financial goals." - Jessica P.</p>
+        <p>"I love how intuitive the app is. It’s changed how I approach my finances." - David K.</p>
       </section>
     </div>
   );
