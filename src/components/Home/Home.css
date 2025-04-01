@@ -86,16 +86,21 @@ body {
     color: #f4f4f9;
 }
 
-.learn-more {
+.feature-cta-button {
     display: inline-block;
     margin-top: 10px;
     color: #ffcc00; /* Yellow for visibility */
     text-decoration: none;
     font-weight: bold;
+    transition: all 0.2s ease;
+    display: inline-block;
 }
 
-.learn-more:hover {
-    text-decoration: underline;
+.feature-cta-button:hover {
+    transform: scale(1.1);
+    color: #ffcc00; /* Use your theme's accent color */
+    text-shadow: 0 0 8px rgba(255, 140, 0, 0.6); /* Glowing effect */
+
 }
 
 /* How It Works & Testimonials Sections */

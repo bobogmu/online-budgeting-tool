@@ -1,4 +1,6 @@
 import './Home.css';
+import { Link } from 'react-router-dom';
+
 import budget_video from '../../assets/Budget_Tool.mp4';
 
 function Home() {
@@ -22,31 +24,33 @@ function Home() {
           <div className="feature-item">
             <h2>Create Budgets</h2>
             <p>Plan your spending and track where your money goes.</p>
-            <a href="/budgets" className="learn-more">
-              Learn More
-            </a>
+            <Link to="/tools/budget" className="feature-cta-button">
+              Explore the Budget Tool
+            </Link>
           </div>
           <div className="feature-item">
             <h2>Track Investments</h2>
-            <p>Monitor your daily expenses with easy-to-read reports.</p>
-            <a href="/expenses" className="learn-more">
-              Learn More
-            </a>
+            <p>Learn how to make your money work for you.</p>
+            <Link to="/tools/interest-calculator" className="feature-cta-button">
+              Start Tracking Investments
+            </Link>
           </div>
           <div className="feature-item">
-            <h2>Financial Calculators</h2>
-            <p>Use our tools to calculate savings, loans, and investments.</p>
-            <a href="/calculators" className="learn-more">
-              Learn More
-            </a>
+            <h2>Contact Experts</h2>
+            <p>Reach out to the OBT team with all your financial tool questions.</p>
+            <Link to="/contact" className="feature-cta-button">
+              Contact Experts Now
+            </Link>
           </div>
         </div>
       </section>
 
       <section className="how-it-works">
-        <h1>How It Works</h1>
-        <p>Learn how to set up your account, create a budget, and start tracking expenses.</p>
-        <button className="cta-button">See How It Works</button>
+        <h1>Don't know where to start?</h1>
+        <p>Familiarize yourself with key financial terms to begin your journey.</p>
+        <Link to="/help" className="feature-cta-button">
+          Explore financial terms
+        </Link>
       </section>
 
       <section className="testimonials">
