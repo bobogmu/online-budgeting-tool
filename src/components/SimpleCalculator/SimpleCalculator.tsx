@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './SimpleCalculator.css';
+import { evaluate } from 'mathjs';
 
 const SimpleCalculator: React.FC = () => {
   const [input, setInput] = useState('0');
@@ -18,7 +19,8 @@ const SimpleCalculator: React.FC = () => {
 
   const handleCalculate = () => {
     try {
-      setInput(eval(input).toString());
+      const result = evaluate(input);
+      setInput(result.toString());
     } catch {
       setInput('Error');
     }
