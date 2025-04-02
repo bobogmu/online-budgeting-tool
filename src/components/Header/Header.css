@@ -58,3 +58,39 @@ nav ul li a:hover {
   color: #ffcc00; /* Highlight color */
   border-bottom: 2px solid #ffcc00; /* Underline effect */
 }
+
+.simple-calculator-dropdown {
+  position: relative;
+  margin-left: auto; /* Push to the right */
+  padding-right: 20px;
+}
+
+.simple-calculator-dropbutton {
+  background-color: #ffcc00;
+  color: #1f76a1;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.simple-calculator-dropbutton:hover {
+  background-color: #e6b800;
+}
+
+.simple-nav-calculator-container {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  padding: 10px;
+  z-index: 1000;
+  margin-right: 20px;
+}
+
+.simple-calc-img {
+  height: 30px;  /* Adjust this based on the desired image size */
+  width: auto;   /* Maintain aspect ratio */
+  object-fit: contain; /* Ensures the image scales properly without distortion */
+  transform: scale(1.4); /* Scales the image by 1.5 times */
+}

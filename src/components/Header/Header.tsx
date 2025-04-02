@@ -1,9 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import './Header.css';
 import logo from '../../assets/logo.jpg';
+import simple_calc_img from '../../assets/simple-calc-img.png';
+
+import SimpleCalculator from '../SimpleCalculator/SimpleCalculator';
 
 function Header() {
   const location = useLocation(); // Get current URL path
+  const [showCalculator, setShowCalculator] = useState(false);
 
   return (
     <header className="header">
@@ -31,6 +36,17 @@ function Header() {
           </li>
         </ul>
       </nav>
+      {/* Calculator Dropdown */}
+      <div className="simple-calculator-dropdown">
+        <button className="simple-calculator-dropbutton" onClick={() => setShowCalculator(!showCalculator)}>
+          <img src={simple_calc_img} alt="Simple Calculator" className="simple-calc-img" />
+        </button>
+        {showCalculator && (
+          <div className="simple-nav-calculator-container">
+            <SimpleCalculator />
+          </div>
+        )}
+      </div>
     </header>
   );
 }

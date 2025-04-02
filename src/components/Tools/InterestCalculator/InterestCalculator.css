@@ -78,12 +78,12 @@ button {
     border-radius: 5px;
 }
 
-    .input-wrapper input {
-        flex: 1;
-        border: none;
-        outline: none;
-        padding: 5px;
-    }
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+}
 
 .error-text {
     color: red;
@@ -106,32 +106,32 @@ button {
     width: 100%; /* Ensure the wrapper spans the full width */
 }
 
-    .tooltip-wrapper input {
-        width: 100%; /* Make the input field fill the wrapper */
-        box-sizing: border-box; /* Include padding and borders in the width calculation */
-    }
+.tooltip-wrapper input {
+    width: 100%; /* Make the input field fill the wrapper */
+    box-sizing: border-box; /* Include padding and borders in the width calculation */
+}
 
-    .tooltip-wrapper .tooltip-content {
-        visibility: hidden;
-        width: 200px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        border-radius: 5px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%; /* Position the tooltip above the field */
-        left: 50%;
-        transform: translateX(-50%); /* Center align the tooltip */
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
+.tooltip-wrapper .tooltip-content {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the field */
+    left: 50%;
+    transform: translateX(-50%); /* Center align the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
 
-    .tooltip-wrapper:hover .tooltip-content {
-        visibility: visible;
-        opacity: 1;
-    }
+.tooltip-wrapper:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
 
 /* Boxed input area */
 .input-box {
@@ -159,40 +159,40 @@ button {
     transition: all 0.3s ease;
 }
 
-    .progress-step.current {
-        color: green;
-        border-color: green;
-    }
+.progress-step.current {
+    color: green;
+    border-color: green;
+}
 
-    .progress-step.completed {
-        color: blue;
-        border-color: blue;
-    }
+.progress-step.completed {
+    color: blue;
+    border-color: blue;
+}
 
-    .progress-step.not-done {
-        color: #6c757d;
-        border-color: #ccc;
-    }
+.progress-step.not-done {
+    color: #6c757d;
+    border-color: #ccc;
+}
 
 /* Navigation buttons */
 .button-group {
     margin-top: 15px;
 }
 
-    .button-group button {
-        width: 45%;
-        padding: 10px;
-        margin: 5px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.button-group button {
+    width: 45%;
+    padding: 10px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        .button-group button:hover {
-            background-color: #0056b3;
-        }
+.button-group button:hover {
+    background-color: #0056b3;
+}
 
 /* Disabled button style */
 button:disabled {
@@ -205,19 +205,19 @@ button:disabled {
     margin-top: 10px;
 }
 
-    .recalc-container button {
-        width: 60%;
-        padding: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.recalc-container button {
+    width: 60%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        .recalc-container button:hover {
-            background-color: #1e7e34;
-        }
+.recalc-container button:hover {
+    background-color: #1e7e34;
+}
 
 /* Right side: results box */
 .output-section {
