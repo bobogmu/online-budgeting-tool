@@ -127,7 +127,7 @@
   .add-expense-button{
     width: 100%;
     background: #4d9fc9;
-    color: black;
+    color: white;
     border: none;
     padding: 12px;
     font-size: 20px;
@@ -158,14 +158,14 @@
 
   .delete-expense-button{
     background: #4d9fc9;
-    color: #000;
+    color: white;
   }
 
   .delete-expense-undo-button{
     margin-top: 10px;
     width: 100%;
     background: #4d9fc9;
-    color: black;
+    color: white;
     border: none;
     padding: 12px;
     font-size: 20px;
