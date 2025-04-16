@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import BudgetVisualization from './BudgetVisualization';
 import './Budget.css';
 
 function Budget() {
@@ -241,33 +242,9 @@ function Budget() {
       </div>
       {/* Put results in a table */}
       <div className="output-container-budget">
-        <h1>Results</h1>
-        <table className="results-table">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Monthly ($)</th>
-              <th>Yearly ($)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Income</td>
-              <td>{calculateIncome().monthly.toFixed(2)}</td>
-              <td>{calculateIncome().yearly.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Expenses</td>
-              <td>{totalMonthlyExpenses.toFixed(2)}</td>
-              <td>{totalYearlyExpenses.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td>Disposable</td>
-              <td>{monthlyDisposableIncome.toFixed(2)}</td>
-              <td>{yearlyDisposableIncome.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="output-container-budget">
+          <BudgetVisualization monthlyIncome={monthlyIncome} yearlyIncome={yearlyIncome} totalMonthlyExpenses={totalMonthlyExpenses} totalYearlyExpenses={totalYearlyExpenses} monthlyDisposableIncome={monthlyDisposableIncome} yearlyDisposableIncome={yearlyDisposableIncome} />
+        </div>
       </div>
     </div>
   );
