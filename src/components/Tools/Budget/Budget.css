@@ -140,6 +140,11 @@
     color: white;
   }
 
+  .toggle-disable-button{
+    background: #4d9fc9;
+    color: white;
+  }
+
   .delete-expense-undo-button{
     margin-top: 10px;
     width: 100%;
@@ -156,4 +161,13 @@
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  input:disabled,
+  select:disabled {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #888;               /* Gray text */
+    border: 1px solid #ccc;    /* Softer border */
+    cursor: not-allowed;       /* Show disabled cursor */
+    opacity: 1;                /* Prevent fading if you want it visible */
   }

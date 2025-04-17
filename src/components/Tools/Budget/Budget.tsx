@@ -21,7 +21,7 @@ function Budget() {
   // Manage multiple rows of expenses
   // array of objects where each object has two properties, a string and a number
   // The array will be appended to as the user addes expenses
-  const [expenses, setExpenses] = useState<{ description: string; amount: number; frequency: string }[]>(savedData.expenses || []);
+  const [expenses, setExpenses] = useState<{ description: string; amount: number; frequency: string; disabled: boolean }[]>(savedData.expenses || []);
 
   // States to store monthly expenses and yearly expenses
   const [totalMonthlyExpenses, setTotalMonthlyExpenses] = useState(0);
@@ -45,7 +45,7 @@ function Budget() {
 
   // Function to add a new row
   const addExpenseRow = () => {
-    setExpenses([...expenses, { description: '', amount: 0, frequency: '' }]);
+    setExpenses([...expenses, { description: '', amount: 0, frequency: '', disabled: false }]);
   };
 
   // Delete a row from the list of expenses
@@ -115,6 +115,13 @@ function Budget() {
     setExpenses(updatedExpenses);
   };
 
+  // Function to toggle the disabled state of an expense
+  const toggleExpenseDisabled = (index: number) => {
+    const updatedExpenses = [...expenses];
+    updatedExpenses[index].disabled = !updatedExpenses[index].disabled;
+    setExpenses(updatedExpenses);
+  };
+
   // Calculate the users income based on frequency and amount
   const calculateIncome = () => {
     const amount = incomeAmount === '' ? 0 : Number(incomeAmount); // Ensure income amount is a number (string by default)
@@ -147,6 +154,7 @@ function Budget() {
   useEffect(() => {
     // Calcuate total expenses based on frequency
     let monthlyTotal = expenses.reduce((sum, expense) => {
+      if (expense.disabled) return sum; // Skip disabled expenses
       let amount = Number.isNaN(expense.amount) ? 0 : expense.amount;
       let frequencyMultiplier = 0;
 
@@ -216,15 +224,18 @@ function Budget() {
               <button type="button" className="delete-expense-button" onClick={() => deleteExpenseRow(index)}>
                 Delete
               </button>
-              <select id="expenseFrequency" value={expense.frequency} onChange={(e) => handleExpenseChange(index, 'frequency', e.target.value)}>
+              <button type="button" className="toggle-disable-button" onClick={() => toggleExpenseDisabled(index)}>
+                {expense.disabled ? 'Enable' : 'Disable'}
+              </button>
+              <select id="expenseFrequency" value={expense.frequency} onChange={(e) => handleExpenseChange(index, 'frequency', e.target.value)} disabled={expense.disabled}>
                 <option value="">Select Frequency</option>
                 <option value="weekly">Weekly</option>
                 <option value="biweekly">Bi-Weekly</option>
                 <option value="monthly">Monthly</option>
                 <option value="yearly">Yearly</option>
               </select>
-              <input id="expenseDescription" type="text" placeholder="Expense Name" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} />
-              <input id="expenseAmount" type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} />
+              <input id="expenseDescription" type="text" placeholder="Expense Name" value={expense.description} onChange={(e) => handleExpenseChange(index, 'description', e.target.value)} disabled={expense.disabled} />
+              <input id="expenseAmount" type="number" placeholder="Amount" value={expense.amount} onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)} disabled={expense.disabled} />
             </div>
           ))}
           {/* Add expense button */}
