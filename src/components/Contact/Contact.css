@@ -9,10 +9,9 @@
 }
 
 .contact-container h1 {
-    color: #333; 
-    text-align: center;
-    font-size: 36px;
-    font-weight: bold;
+    font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #222;
 }
 
 .contact-container p {
@@ -24,10 +23,12 @@
 
 #contact-form {
     width: 100%;
+    gap: 1rem;
     max-width: 1000px;
     background: white;
     padding: 30px;
     border-radius: 8px;
+    flex-wrap: wrap;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -67,18 +68,6 @@ textarea:focus {
     border-color: #007bff;
 }
 
-/* Submit button */
-button {
-    width: 100%;
-    background: #4d9fc9;
-    color: black;
-    border: none;
-    padding: 12px;
-    font-size: 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
 button:hover {
     background: #134c68;
 }
@@ -106,4 +95,16 @@ button:hover {
     max-width: 700px; /* Limit width to prevent it from being too wide */
     width: 100%;
     margin-top: 20px;
+  }
+
+
+  .contact-us-submit-button{
+    width: 100%;
+    background: #4d9fc9;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 24px;
+    border-radius: 8px;
+    cursor: pointer;
   }

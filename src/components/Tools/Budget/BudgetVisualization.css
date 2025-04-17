@@ -9,26 +9,52 @@
     align-items: center; /* Centers the content inside */
   }
   
-  .results-table {
-    width: 120%;
-    border-collapse: collapse; /* Ensures borders are clean */
-    margin-top: 10px;
-    table-layout: fixed; /* Keeps column width consistent */
-  }
-  
   .results-table th,
-  .results-table td {
-    border: 2px solid #000; /* Darker border for clear structure */
-    padding: 10px;
-    text-align: left;
-    white-space: nowrap; /* Prevents word wrapping */
+.results-table td {
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+
+}
+
+/* Dark blue for the table header */
+.results-table thead {
+    background-color: #1a4e74; /* Dark blue for the header */
+    color: white; /* Ensures the text is readable on the dark background */
   }
   
-  .results-table th {
-    background-color: #ddd;
-    font-weight: bold;
+  /* Table header cells */
+  .results-table thead th {
+    padding: 12px;
     text-align: center;
+    font-weight: bold;
   }
+  
+  /* Light blue rows only in the table body */
+.results-table tbody tr:nth-child(odd) {
+    background-color: #cfe2f3; /* Light blue for odd rows */
+  }
+  
+  /* Lighter blue rows only in the table body */
+  .results-table tbody tr:nth-child(even) {
+    background-color: #cfe2f3; /* Lighter blue for even rows */
+  }
+  
+  /* Hover effect on rows */
+  .results-table tbody tr:hover {
+    background-color: #2e86c1; /* Darker blue on hover */
+    color: white;
+    cursor: pointer;
+  }
+
+.results-table th {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.results-table td {
+  font-size: 20px;
+}
 
   .budget-visualization button {
     margin-bottom: 10px;

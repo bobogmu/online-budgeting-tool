@@ -49,7 +49,7 @@ function Contact() {
             <textarea className="form-control" rows={6} value={message} onChange={(e) => setMessage(e.target.value)} required></textarea>
           </div>
           {/* Submit button, autmatically linked to submit for event */}
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="contact-us-submit-button">
             Submit
           </button>
         </form>

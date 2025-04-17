@@ -39,7 +39,7 @@ const BudgetVisualization: React.FC<BudgetVisualizationProps> = ({ monthlyIncome
 
       {!showChart ? (
         <table className="results-table">
-          <thead>
+          <thead className="budget-results-table-header">
             <tr>
               <th>Category</th>
               <th>Monthly</th>
