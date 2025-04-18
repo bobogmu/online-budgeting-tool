@@ -160,7 +160,7 @@ function StepByStepInterestCalculator() {
 
   // Calculation logic (triggered manually by the user).
     const calculateResults = () => {
-        // Validate every field.
+        // Validation of every field
         let valid = true;
         stepsConfig.forEach((step) => {
             if (!step.validate(formData[step.key])) {
@@ -185,18 +185,25 @@ function StepByStepInterestCalculator() {
         const interestEarned = A - P;
         const endingBalance = A + totalContrib + interestEarned;
 
-        // Get total months and monthly interest rate
+        // Use toFixed(2) to round to two decimals, and convert back to number.
+        setResult({
+            endingBalance: parseFloat(endingBalance.toFixed(2)),
+            totalPrincipal: parseFloat(P.toFixed(2)),
+            totalContributions: parseFloat(totalContrib.toFixed(2)),
+            interestEarned: parseFloat(interestEarned.toFixed(2))
+        });
+
+        // Simulation for the line chart (month-by-month progression)
         const numMonths = parseFloat(formData.investmentLength);
         const monthlyInterestRate = r / 12;
-        let balanceSim = P; // Starting with your initial principal
+        let balanceSim = P;
         const simulationData = [];
 
-        // Simulate the investment balance month by month
         for (let i = 1; i <= numMonths; i++) {
-            // Add your monthly contribution first
+            // Add monthly contribution
             balanceSim += monthlyContrib;
 
-            // Add your annual contribution at the end of each year
+            // Add annual contribution at the end of each year
             if (i % 12 === 0) {
                 balanceSim += annualContrib;
             }
@@ -204,26 +211,15 @@ function StepByStepInterestCalculator() {
             // Apply monthly interest
             balanceSim *= (1 + monthlyInterestRate);
 
-            // Capture the balance for this month (convert the month into a year value for clarity if desired)
             simulationData.push({
                 month: i,
-                // You could also include a "year" property if you prefer:
                 year: (i / 12).toFixed(1),
                 balance: parseFloat(balanceSim.toFixed(2))
             });
         }
-
-        // Store the simulation data for the line chart
         setLineChartData(simulationData);
+    };
 
-        // Then save your existing totals as before:
-        setResult({
-            endingBalance,
-            totalPrincipal: P,
-            totalContributions: totalContrib,
-            interestEarned
-        });
-    }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
