@@ -1,18 +1,5 @@
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
-import {
-    PieChart,
-    Pie,
-    Cell,
-    Tooltip,
-    Legend,
-    LineChart,
-    Line,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    BarChart,
-    Bar
-} from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, LineChart, Line, CartesianGrid, XAxis, YAxis, BarChart, Bar } from 'recharts';
 
 import './InterestCalculator.css';
 
@@ -68,7 +55,7 @@ const stepsConfig: StepConfig[] = [
   },
   {
     key: 'interestRate',
-    label: 'Interest Rate (%)',
+    label: 'Interest Rate',
     description: 'Enter the annual interest rate (0 to 100%).',
     validate: (value: string) => {
       const num = parseFloat(value);
@@ -77,7 +64,7 @@ const stepsConfig: StepConfig[] = [
   },
   {
     key: 'investmentLength',
-    label: 'Investment Length (months)',
+    label: 'Investment Length',
     description: 'Enter the number of months (1 to 1200).',
     validate: (value: string) => {
       const num = parseFloat(value);
@@ -95,14 +82,12 @@ function StepByStepInterestCalculator() {
     investmentLength: ''
   });
 
-    const [lineChartData, setLineChartData] = useState<
-        { month: number; year: string; balance: number }[]
-    >([]);
+  const [lineChartData, setLineChartData] = useState<{ month: number; year: string; balance: number }[]>([]);
 
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [result, setResult] = useState<CalculatorResult | null>(null);
-  const [chartType, setChartType] = useState("pie");
+  const [chartType, setChartType] = useState('pie');
 
   // On mount: load saved data from localStorage.
   useEffect(() => {
@@ -159,67 +144,66 @@ function StepByStepInterestCalculator() {
   };
 
   // Calculation logic (triggered manually by the user).
-    const calculateResults = () => {
-        // Validation of every field
-        let valid = true;
-        stepsConfig.forEach((step) => {
-            if (!step.validate(formData[step.key])) {
-                valid = false;
-                setErrors((prev) => ({
-                    ...prev,
-                    [step.key]: `Please enter a valid value for ${step.label.toLowerCase()}`
-                }));
-            }
-        });
-        if (!valid) return;
+  const calculateResults = () => {
+    // Validation of every field
+    let valid = true;
+    stepsConfig.forEach((step) => {
+      if (!step.validate(formData[step.key])) {
+        valid = false;
+        setErrors((prev) => ({
+          ...prev,
+          [step.key]: `Please enter a valid value for ${step.label.toLowerCase()}`
+        }));
+      }
+    });
+    if (!valid) return;
 
-        const P = parseFloat(formData.initialInvestment);
-        const r = parseFloat(formData.interestRate) / 100;
-        const t = parseFloat(formData.investmentLength) / 12;
-        const annualContrib = parseFloat(formData.annualContribution);
-        const monthlyContrib = parseFloat(formData.monthlyContribution);
+    const P = parseFloat(formData.initialInvestment);
+    const r = parseFloat(formData.interestRate) / 100;
+    const t = parseFloat(formData.investmentLength) / 12;
+    const annualContrib = parseFloat(formData.annualContribution);
+    const monthlyContrib = parseFloat(formData.monthlyContribution);
 
-        // Basic compound calculation.
-        const A = P * Math.pow(1 + r, t);
-        const totalContrib = annualContrib * t + monthlyContrib * parseFloat(formData.investmentLength);
-        const interestEarned = A - P;
-        const endingBalance = A + totalContrib + interestEarned;
+    // Basic compound calculation.
+    const A = P * Math.pow(1 + r, t);
+    const totalContrib = annualContrib * t + monthlyContrib * parseFloat(formData.investmentLength);
+    const interestEarned = A - P;
+    const endingBalance = A + totalContrib + interestEarned;
 
-        // Use toFixed(2) to round to two decimals, and convert back to number.
-        setResult({
-            endingBalance: parseFloat(endingBalance.toFixed(2)),
-            totalPrincipal: parseFloat(P.toFixed(2)),
-            totalContributions: parseFloat(totalContrib.toFixed(2)),
-            interestEarned: parseFloat(interestEarned.toFixed(2))
-        });
+    // Use toFixed(2) to round to two decimals, and convert back to number.
+    setResult({
+      endingBalance: parseFloat(endingBalance.toFixed(2)),
+      totalPrincipal: parseFloat(P.toFixed(2)),
+      totalContributions: parseFloat(totalContrib.toFixed(2)),
+      interestEarned: parseFloat(interestEarned.toFixed(2))
+    });
 
-        // Simulation for the line chart (month-by-month progression)
-        const numMonths = parseFloat(formData.investmentLength);
-        const monthlyInterestRate = r / 12;
-        let balanceSim = P;
-        const simulationData = [];
+    // Simulation for the line chart (month-by-month progression)
+    const numMonths = parseFloat(formData.investmentLength);
+    const monthlyInterestRate = r / 12;
+    let balanceSim = P;
+    const simulationData = [];
 
-        for (let i = 1; i <= numMonths; i++) {
-            // Add monthly contribution
-            balanceSim += monthlyContrib;
+    for (let i = 1; i <= numMonths; i++) {
+      // Add monthly contribution
+      balanceSim += monthlyContrib;
 
-            // Add annual contribution at the end of each year
-            if (i % 12 === 0) {
-                balanceSim += annualContrib;
-            }
+      // Add annual contribution at the end of each year
+      if (i % 12 === 0) {
+        balanceSim += annualContrib;
+      }
 
-            // Apply monthly interest
-            balanceSim *= (1 + monthlyInterestRate);
+      // Apply monthly interest
+      balanceSim *= 1 + monthlyInterestRate;
 
-            simulationData.push({
-                month: i,
-                year: (i / 12).toFixed(1),
-                balance: parseFloat(balanceSim.toFixed(2))
-            });
-        }
-        setLineChartData(simulationData);
-    };
-
+      simulationData.push({
+        month: i,
+        year: (i / 12).toFixed(1),
+        balance: parseFloat(balanceSim.toFixed(2))
+      });
+    }
+    setLineChartData(simulationData);
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -235,39 +219,41 @@ function StepByStepInterestCalculator() {
     <div className="calculator-container">
       {/* Left Section: Progress Bar & Input Area */}
       <div className="input-section">
-        <div className="progress-bar">
-          {stepsConfig.map((step, index) => {
-            let className = 'progress-step';
-            if (index === currentStep) {
-              className += ' current';
-            } else if (index < currentStep) {
-              className += ' completed';
-            } else {
-              className += ' not-done';
-            }
-            return (
-              <div key={index} className={className} onClick={() => jumpToStep(index)}>
-                {step.label}
-              </div>
-            );
-          })}
+        <div className="progress-bar-wrapper">
+          <div className="progress-bar">
+            {stepsConfig.map((step, index) => {
+              let className = 'progress-step';
+              if (index === currentStep) {
+                className += ' current';
+              } else if (index < currentStep) {
+                className += ' completed';
+              } else {
+                className += ' not-done';
+              }
+              return (
+                <div key={index} className={className} onClick={() => jumpToStep(index)}>
+                  <div className="progress-step-label">{step.label}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className="input-box">
-          <h2>{stepsConfig[currentStep].label}</h2>
-          <p>{stepsConfig[currentStep].description}</p>
-          <input type="number" name={stepsConfig[currentStep].key} value={formData[stepsConfig[currentStep].key]} onChange={handleInputChange} onKeyDown={handleKeyDown} />
+          <h2 className="current-steps-label">{stepsConfig[currentStep].label}</h2>
+          <p className="current-steps-desc">{stepsConfig[currentStep].description}</p>
+          <input className="current-steps-input" type="number" name={stepsConfig[currentStep].key} value={formData[stepsConfig[currentStep].key]} onChange={handleInputChange} onKeyDown={handleKeyDown} />
           {errors[stepsConfig[currentStep].key] && <p className="error-text">{errors[stepsConfig[currentStep].key]}</p>}
           <div className="button-group">
             {currentStep > 0 && <button onClick={() => setCurrentStep(currentStep - 1)}>Back</button>}
-                      {currentStep < stepsConfig.length - 1 ? (
-                          <button className="btn-custom-blue" onClick={nextStep}>
-                              Next
-                          </button>
-                      ) : (
-                          <button className="btn-custom-blue" onClick={calculateResults}>
-                              Calculate
-                          </button>
-                      )}
+            {currentStep < stepsConfig.length - 1 ? (
+              <button className="btn-custom-blue" onClick={nextStep}>
+                Next
+              </button>
+            ) : (
+              <button className="btn-custom-blue" onClick={calculateResults}>
+                Calculate
+              </button>
+            )}
           </div>
           {/* The Recalculate button will appear only after a calculation is done */}
           {result && (
@@ -279,113 +265,86 @@ function StepByStepInterestCalculator() {
       </div>
 
       {/* Right Section: Output (only renders if there is a result) */}
-          {result && (
-              <div className="output-section">
-                  <div className="results-box">
-                      {/* Results text and data */}
-                      <h2>Results</h2>
-                      <p>Ending Balance: ${result.endingBalance.toFixed(2)}</p>
-                      <p>Total Principal: ${result.totalPrincipal.toFixed(2)}</p>
-                      <p>Total Contributions: ${result.totalContributions.toFixed(2)}</p>
-                      <p>Total Interest Earned: ${result.interestEarned.toFixed(2)}</p>
+      {result && (
+        <div className="output-section">
+          <div className="results-box">
+            {/* Results text and data */}
+            <h2>Results</h2>
+            <p>Ending Balance: ${result.endingBalance.toFixed(2)}</p>
+            <p>Total Principal: ${result.totalPrincipal.toFixed(2)}</p>
+            <p>Total Contributions: ${result.totalContributions.toFixed(2)}</p>
+            <p>Total Interest Earned: ${result.interestEarned.toFixed(2)}</p>
 
-                      {/* Chart container with rounded box styling (from .output-section & .results-box) */}
-                      <div className="chart-container">
-                          {chartType === "pie" && (
-                              <PieChart width={400} height={300}>
-                                  <Pie
-                                      data={[
-                                          { name: 'Principal', value: result.totalPrincipal, color: '#007bff' },
-                                          { name: 'Contributions', value: result.totalContributions, color: '#28a745' },
-                                          { name: 'Interest', value: result.interestEarned, color: '#dc3545' }
-                                      ]}
-                                      cx="50%"
-                                      cy="50%"
-                                      outerRadius={100}
-                                      dataKey="value"
-                                  >
-                                      {['#007bff', '#28a745', '#dc3545'].map((color, index) => (
-                                          <Cell key={`cell-${index}`} fill={color} />
-                                      ))}
-                                  </Pie>
-                                  <Tooltip />
-                                  <Legend />
-                              </PieChart>
-                          )}
+            {/* Chart container with rounded box styling (from .output-section & .results-box) */}
+            <div className="chart-container">
+              {chartType === 'pie' && (
+                <PieChart width={400} height={300}>
+                  <Pie
+                    data={[
+                      { name: 'Principal', value: result.totalPrincipal, color: '#007bff' },
+                      { name: 'Contributions', value: result.totalContributions, color: '#28a745' },
+                      { name: 'Interest', value: result.interestEarned, color: '#dc3545' }
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    dataKey="value"
+                  >
+                    {['#007bff', '#28a745', '#dc3545'].map((color, index) => (
+                      <Cell key={`cell-${index}`} fill={color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              )}
 
-                          {chartType === "line" && (
-                              <LineChart
-                                  width={500}
-                                  height={300}
-                                  data={lineChartData}
-                              >
-                                  <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis
-                                      dataKey="month"
-                                      label={{ value: 'Month', position: 'insideBottom', offset: -5 }}
-                                  />
-                                  <YAxis
-                                      label={{ value: 'Balance ($)', angle: -90, position: 'insideLeft' }}
-                                  />
-                                  <Tooltip formatter={(value) => `$${value}`} />
-                                  <Legend />
-                                  <Line
-                                      type="monotone"
-                                      dataKey="balance"
-                                      name="Total Balance"
-                                      stroke="#4d9fc9"
-                                      activeDot={{ r: 8 }}
-                                  />
-                              </LineChart>
-                          )}
+              {chartType === 'line' && (
+                <LineChart width={500} height={300} data={lineChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" label={{ value: 'Month', position: 'insideBottom', offset: -5 }} />
+                  <YAxis label={{ value: 'Balance ($)', angle: -90, position: 'insideLeft' }} />
+                  <Tooltip formatter={(value) => `$${value}`} />
+                  <Legend />
+                  <Line type="monotone" dataKey="balance" name="Total Balance" stroke="#4d9fc9" activeDot={{ r: 8 }} />
+                </LineChart>
+              )}
 
+              {chartType === 'bar' && (
+                <BarChart
+                  width={500} // Increased width
+                  height={300}
+                  data={[
+                    { name: 'Principal', value: result.totalPrincipal },
+                    { name: 'Contributions', value: result.totalContributions },
+                    { name: 'Interest', value: result.interestEarned }
+                  ]}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" fill="#4d9fc9" />
+                </BarChart>
+              )}
+            </div>
 
-                          {chartType === "bar" && (
-                              <BarChart
-                                  width={500}  // Increased width
-                                  height={300}
-                                  data={[
-                                      { name: 'Principal', value: result.totalPrincipal },
-                                      { name: 'Contributions', value: result.totalContributions },
-                                      { name: 'Interest', value: result.interestEarned }
-                                  ]}
-                              >
-                                  <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis dataKey="name" />
-                                  <YAxis />
-                                  <Tooltip />
-                                  <Legend />
-                                  <Bar dataKey="value" fill="#4d9fc9" />
-                              </BarChart>
-                          )}
-
-                      </div>
-
-                      {/* Chart toggle buttons (moved below the chart) */}
-                      <div className="chart-toggle">
-                          <button
-                              onClick={() => setChartType("pie")}
-                              className={chartType === "pie" ? "active" : ""}
-                          >
-                              Pie
-                          </button>
-                          <button
-                              onClick={() => setChartType("line")}
-                              className={chartType === "line" ? "active" : ""}
-                          >
-                              Line
-                          </button>
-                          <button
-                              onClick={() => setChartType("bar")}
-                              className={chartType === "bar" ? "active" : ""}
-                          >
-                              Bar
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          )}
-
+            {/* Chart toggle buttons (moved below the chart) */}
+            <div className="chart-toggle">
+              <button onClick={() => setChartType('pie')} className={chartType === 'pie' ? 'active' : ''}>
+                Pie
+              </button>
+              <button onClick={() => setChartType('line')} className={chartType === 'line' ? 'active' : ''}>
+                Line
+              </button>
+              <button onClick={() => setChartType('bar')} className={chartType === 'bar' ? 'active' : ''}>
+                Bar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

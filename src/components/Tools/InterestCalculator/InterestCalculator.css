@@ -143,6 +143,36 @@ button {
     background: #f9f9f9;
 }
 
+.input-box .current-steps-input {
+    padding: 8px;
+    margin: 10px 0;  /* Add spacing between input and other elements */
+    width: 90%;  /* Center the input field by controlling its width */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+
+    /* Ensure the text inside the input remains left-aligned */
+    text-align: left;
+}
+
+.current-steps-label {
+    display: block; /* Ensures the label takes a full line */
+    white-space: nowrap; /* Prevents wrapping */
+}
+
+.current-steps-label span {
+    display: block; /* Force each word to be on its own line */
+    text-align: center; /* Optionally center the text if needed */
+}
+
+
+.progress-bar-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 /* Progress bar styling */
 .progress-bar {
     display: flex;
@@ -157,6 +187,7 @@ button {
     cursor: pointer;
     border-bottom: 3px solid #ccc;
     transition: all 0.3s ease;
+    text-align: center;
 }
 
 .progress-step.current {
