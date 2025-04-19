@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import './Header.css';
-import logo from '../../assets/logo.jpg';
+import logo from '../../assets/logo White.png';
 import simple_calc_img from '../../assets/simple-calc-img.png';
 
 import SimpleCalculator from '../SimpleCalculator/SimpleCalculator';
